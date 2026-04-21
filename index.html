@@ -1,0 +1,3732 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Reggie Raw Feed" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="theme-color" content="#ece4d8" id="themeColorMeta" />
+    <title>Reggie Raw Feed</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f4efe7;
+        --bg-elevated: rgba(255, 251, 246, 0.9);
+        --bg-soft: rgba(255, 248, 240, 0.7);
+        --surface: rgba(255, 252, 248, 0.74);
+        --surface-strong: rgba(255, 252, 248, 0.88);
+        --surface-press: rgba(245, 237, 228, 0.92);
+        --card-border: rgba(110, 95, 73, 0.12);
+        --card-border-strong: rgba(110, 95, 73, 0.18);
+        --text: #1f1a16;
+        --text-soft: #6e6458;
+        --text-faint: #8c8174;
+        --accent: #1d6b5d;
+        --accent-2: #a86b36;
+        --accent-soft: rgba(29, 107, 93, 0.12);
+        --accent-strong: #14473f;
+        --warning: #b56328;
+        --danger: #b24545;
+        --danger-soft: rgba(178, 69, 69, 0.12);
+        --success: #2f7f5d;
+        --shadow: 0 24px 60px rgba(43, 31, 17, 0.1);
+        --shadow-soft: 0 14px 34px rgba(43, 31, 17, 0.08);
+        --radius-xl: 28px;
+        --radius-lg: 22px;
+        --radius-md: 16px;
+        --radius-sm: 12px;
+        --ring-track: rgba(29, 107, 93, 0.12);
+        --grid: rgba(110, 95, 73, 0.12);
+        --chip: rgba(255, 252, 248, 0.86);
+        --pill: rgba(29, 107, 93, 0.1);
+        --overlay: rgba(27, 22, 19, 0.46);
+        --theme-color: #ece4d8;
+        --header-backdrop: saturate(160%) blur(22px);
+        --font-body: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
+        --font-display: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      }
+      html[data-theme="dark"] {
+        color-scheme: dark;
+        --bg: #151917;
+        --bg-elevated: rgba(28, 33, 30, 0.92);
+        --bg-soft: rgba(24, 28, 26, 0.72);
+        --surface: rgba(33, 39, 35, 0.74);
+        --surface-strong: rgba(36, 42, 38, 0.9);
+        --surface-press: rgba(44, 52, 47, 0.92);
+        --card-border: rgba(226, 215, 197, 0.1);
+        --card-border-strong: rgba(226, 215, 197, 0.18);
+        --text: #f6efe6;
+        --text-soft: #c7bcad;
+        --text-faint: #9f9689;
+        --accent: #7dd0b6;
+        --accent-2: #d6a774;
+        --accent-soft: rgba(125, 208, 182, 0.14);
+        --accent-strong: #d8fff3;
+        --warning: #dfaa63;
+        --danger: #ef8e8e;
+        --danger-soft: rgba(239, 142, 142, 0.13);
+        --success: #8ae2bb;
+        --shadow: 0 28px 64px rgba(0, 0, 0, 0.36);
+        --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.28);
+        --ring-track: rgba(125, 208, 182, 0.18);
+        --grid: rgba(226, 215, 197, 0.11);
+        --chip: rgba(33, 39, 35, 0.84);
+        --pill: rgba(125, 208, 182, 0.14);
+        --overlay: rgba(6, 8, 7, 0.54);
+        --theme-color: #151917;
+        --header-backdrop: saturate(140%) blur(22px);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        background: var(--bg);
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: var(--font-body);
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(168, 107, 54, 0.16),
+            transparent 38%
+          ),
+          radial-gradient(
+            circle at top right,
+            rgba(29, 107, 93, 0.14),
+            transparent 42%
+          ),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 24%),
+          var(--bg);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+      body::after,
+      body::before {
+        content: "";
+        position: fixed;
+        inset: auto;
+        border-radius: 999px;
+        pointer-events: none;
+        filter: blur(24px);
+        z-index: 0;
+        opacity: 0.55;
+      }
+      body::before {
+        width: 180px;
+        height: 180px;
+        top: 9%;
+        left: -40px;
+        background: rgba(168, 107, 54, 0.14);
+      }
+      body::after {
+        width: 220px;
+        height: 220px;
+        right: -70px;
+        bottom: 10%;
+        background: rgba(29, 107, 93, 0.12);
+      }
+      button,
+      input,
+      summary {
+        font: inherit;
+      }
+      button:focus-visible,
+      input:focus-visible,
+      summary:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 4px rgba(29, 107, 93, 0.16);
+      }
+      button {
+        border: 0;
+        background: 0 0;
+        color: inherit;
+      }
+      img,
+      svg {
+        display: block;
+        max-width: 100%;
+      }
+      .app-shell {
+        position: relative;
+        z-index: 1;
+        width: min(1120px, 100%);
+        margin: 0 auto;
+        padding: calc(env(safe-area-inset-top) + 18px) 16px
+          calc(env(safe-area-inset-bottom) + 120px);
+      }
+      .card {
+        background: linear-gradient(
+          180deg,
+          var(--surface-strong),
+          var(--surface)
+        );
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-soft);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+      .app-header {
+        position: sticky;
+        top: calc(env(safe-area-inset-top) + 8px);
+        z-index: 30;
+        display: grid;
+        gap: 18px;
+        padding: 18px;
+        margin-bottom: 16px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 252, 248, 0.72),
+          rgba(255, 252, 248, 0.54)
+        );
+        border: 1px solid var(--card-border-strong);
+        backdrop-filter: var(--header-backdrop);
+        -webkit-backdrop-filter: var(--header-backdrop);
+      }
+      html[data-theme="dark"] .app-header {
+        background: linear-gradient(
+          180deg,
+          rgba(31, 36, 33, 0.84),
+          rgba(28, 33, 30, 0.68)
+        );
+      }
+      .header-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .brand h1 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 6vw, 2.6rem);
+        line-height: 0.95;
+        letter-spacing: -0.03em;
+      }
+      .brand p {
+        margin: 8px 0 0;
+        color: var(--text-soft);
+        font-size: 0.98rem;
+      }
+      .status-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: var(--chip);
+        border: 1px solid var(--card-border);
+        color: var(--text-soft);
+        font-size: 0.92rem;
+        line-height: 1;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .status-chip strong {
+        color: var(--text);
+        font-weight: 700;
+      }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .theme-switcher {
+        display: inline-grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+        padding: 6px;
+        background: var(--bg-soft);
+        border-radius: 999px;
+        border: 1px solid var(--card-border);
+      }
+      .ghost-btn,
+      .mini-btn,
+      .preset-btn,
+      .primary-btn,
+      .quick-btn,
+      .secondary-btn,
+      .tag-btn,
+      .text-btn,
+      .theme-btn {
+        transition:
+          transform 160ms ease,
+          box-shadow 160ms ease,
+          background-color 160ms ease,
+          border-color 160ms ease,
+          color 160ms ease,
+          opacity 160ms ease;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .theme-btn {
+        min-width: 66px;
+        padding: 10px 12px;
+        border-radius: 999px;
+        color: var(--text-soft);
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      .theme-btn[aria-pressed="true"] {
+        background: var(--surface-strong);
+        color: var(--text);
+        box-shadow:
+          inset 0 0 0 1px var(--card-border),
+          0 8px 16px rgba(0, 0, 0, 0.08);
+      }
+      .ghost-btn,
+      .mini-btn,
+      .secondary-btn,
+      .tag-btn,
+      .text-btn {
+        border-radius: 999px;
+        border: 1px solid var(--card-border);
+        background: var(--chip);
+        color: var(--text);
+        font-weight: 600;
+      }
+      .ghost-btn {
+        padding: 11px 16px;
+      }
+      .ghost-btn.hidden {
+        display: none;
+      }
+      .dashboard-row {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(150px, 1fr);
+        gap: 12px;
+        overflow-x: auto;
+        padding: 2px 2px 8px;
+        margin-bottom: 16px;
+        scrollbar-width: none;
+      }
+      .dashboard-row::-webkit-scrollbar {
+        display: none;
+      }
+      .dashboard-chip {
+        min-height: 108px;
+        padding: 16px;
+        display: grid;
+        gap: 10px;
+        align-content: space-between;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 252, 248, 0.92),
+          rgba(255, 249, 243, 0.82)
+        );
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
+      }
+      html[data-theme="dark"] .dashboard-chip {
+        background: linear-gradient(
+          180deg,
+          rgba(35, 40, 37, 0.92),
+          rgba(31, 36, 33, 0.86)
+        );
+      }
+      .dashboard-label {
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--text-faint);
+      }
+      .dashboard-value {
+        font-size: 1.3rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+      }
+      .dashboard-meta {
+        font-size: 0.86rem;
+        color: var(--text-soft);
+      }
+      .quick-actions {
+        position: sticky;
+        top: calc(env(safe-area-inset-top) + 112px);
+        z-index: 20;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        padding: 10px;
+        margin-bottom: 18px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 252, 248, 0.78),
+          rgba(255, 252, 248, 0.56)
+        );
+        border: 1px solid var(--card-border);
+        border-radius: 24px;
+        box-shadow: var(--shadow-soft);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+      html[data-theme="dark"] .quick-actions {
+        background: linear-gradient(
+          180deg,
+          rgba(34, 39, 36, 0.82),
+          rgba(31, 36, 33, 0.64)
+        );
+      }
+      .quick-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 12px;
+        border-radius: 16px;
+        background: var(--surface-strong);
+        border: 1px solid var(--card-border);
+        color: var(--text);
+        font-weight: 700;
+        text-align: center;
+      }
+      .content {
+        display: grid;
+        gap: 18px;
+      }
+      .section-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+      .collapsible-summary h2,
+      .section-head h2 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+      .collapsible-summary p,
+      .estimate-note,
+      .helper-copy,
+      .metric-subtext,
+      .section-head p {
+        margin: 6px 0 0;
+        color: var(--text-soft);
+        line-height: 1.5;
+      }
+      .collapsible,
+      .hero-card,
+      .prediction-card,
+      .summary-card {
+        padding: 20px;
+      }
+      .hero-card {
+        overflow: hidden;
+        position: relative;
+      }
+      .hero-card::after {
+        content: "";
+        position: absolute;
+        right: -24px;
+        top: -24px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: radial-gradient(
+          circle,
+          rgba(29, 107, 93, 0.1),
+          transparent 68%
+        );
+        pointer-events: none;
+      }
+      .calculator-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.9fr);
+      }
+      .form-grid {
+        display: grid;
+        gap: 14px;
+      }
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+      .field label,
+      .subfield label {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--text-soft);
+        letter-spacing: 0.01em;
+      }
+      .input-shell {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 16px;
+        min-height: 58px;
+        border-radius: 18px;
+        border: 1px solid var(--card-border);
+        background: var(--surface-strong);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+      .input-shell:focus-within {
+        border-color: rgba(29, 107, 93, 0.36);
+        box-shadow: 0 0 0 4px rgba(29, 107, 93, 0.1);
+      }
+      .input-shell input {
+        width: 100%;
+        border: 0;
+        outline: 0;
+        background: 0 0;
+        color: var(--text);
+        font-size: 1rem;
+        min-height: 56px;
+        padding: 0;
+        appearance: none;
+        -webkit-appearance: none;
+      }
+      .input-unit {
+        color: var(--text-faint);
+        font-weight: 700;
+        font-size: 0.94rem;
+        white-space: nowrap;
+      }
+      .input-help {
+        font-size: 0.84rem;
+        color: var(--text-soft);
+      }
+      .validation-stack {
+        display: grid;
+        gap: 10px;
+        margin-top: 6px;
+      }
+      .message {
+        display: none;
+        padding: 12px 14px;
+        border-radius: 16px;
+        border: 1px solid transparent;
+        font-size: 0.92rem;
+        line-height: 1.45;
+      }
+      .message.is-visible {
+        display: block;
+      }
+      .message.info {
+        color: var(--text-soft);
+        background: rgba(29, 107, 93, 0.06);
+        border-color: rgba(29, 107, 93, 0.12);
+      }
+      .message.warning {
+        color: var(--warning);
+        background: rgba(181, 99, 40, 0.08);
+        border-color: rgba(181, 99, 40, 0.16);
+      }
+      .message.success {
+        color: var(--success);
+        background: rgba(47, 127, 93, 0.08);
+        border-color: rgba(47, 127, 93, 0.18);
+      }
+      .action-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+      }
+      .primary-btn,
+      .secondary-btn {
+        min-height: 52px;
+        padding: 14px 18px;
+        border-radius: 18px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .primary-btn {
+        background: linear-gradient(
+          135deg,
+          var(--accent),
+          var(--accent-strong)
+        );
+        color: #fff;
+        box-shadow: 0 18px 30px rgba(29, 107, 93, 0.2);
+      }
+      .secondary-btn {
+        background: var(--surface-strong);
+        color: var(--text);
+        border: 1px solid var(--card-border);
+      }
+      .ghost-btn[disabled],
+      .mini-btn[disabled],
+      .preset-btn[disabled],
+      .primary-btn[disabled],
+      .quick-btn[disabled],
+      .secondary-btn[disabled],
+      .theme-btn[disabled] {
+        cursor: not-allowed;
+        opacity: 0.45;
+        transform: none;
+        box-shadow: none;
+      }
+      .age-strip,
+      .comparison-strip,
+      .prediction-grid,
+      .summary-grid {
+        display: grid;
+        gap: 12px;
+      }
+      .comparison-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 14px;
+      }
+      .info-tile,
+      .metric-tile {
+        padding: 14px 16px;
+        border-radius: 18px;
+        background: var(--bg-soft);
+        border: 1px solid var(--card-border);
+        min-height: 94px;
+        display: grid;
+        gap: 8px;
+        align-content: space-between;
+      }
+      .tile-label {
+        color: var(--text-faint);
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .tile-value {
+        font-size: 1.16rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+      }
+      .progress-panel {
+        position: relative;
+        padding: 18px;
+        border-radius: 24px;
+        background: linear-gradient(
+          180deg,
+          rgba(29, 107, 93, 0.1),
+          rgba(29, 107, 93, 0.04)
+        );
+        border: 1px solid rgba(29, 107, 93, 0.16);
+        display: grid;
+        gap: 16px;
+        align-content: start;
+      }
+      html[data-theme="dark"] .progress-panel {
+        background: linear-gradient(
+          180deg,
+          rgba(125, 208, 182, 0.14),
+          rgba(125, 208, 182, 0.06)
+        );
+        border-color: rgba(125, 208, 182, 0.2);
+      }
+      .ring-wrap {
+        position: relative;
+        width: min(220px, 100%);
+        aspect-ratio: 1;
+        margin: 0 auto;
+      }
+      .ring-svg {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+        overflow: visible;
+      }
+      .ring-track {
+        fill: none;
+        stroke: var(--ring-track);
+        stroke-width: 12;
+      }
+      .ring-progress {
+        fill: none;
+        stroke: url(#ringGradient);
+        stroke-width: 12;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 420ms ease;
+        filter: drop-shadow(0 12px 18px rgba(29, 107, 93, 0.16));
+      }
+      .ring-center {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 34px;
+      }
+      .ring-kicker {
+        color: var(--text-faint);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .ring-value {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 7vw, 2.8rem);
+        line-height: 0.96;
+        letter-spacing: -0.04em;
+        margin-top: 6px;
+      }
+      .ring-caption {
+        color: var(--text-soft);
+        font-size: 0.9rem;
+        margin-top: 8px;
+        line-height: 1.35;
+      }
+      .stage-chip {
+        display: inline-flex;
+        justify-content: center;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: rgba(29, 107, 93, 0.12);
+        color: var(--accent-strong);
+        font-weight: 700;
+        margin: 0 auto;
+        width: fit-content;
+        max-width: 100%;
+        text-align: center;
+      }
+      html[data-theme="dark"] .stage-chip {
+        color: var(--accent);
+        background: rgba(125, 208, 182, 0.12);
+      }
+      .mini-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .mini-metric {
+        padding: 12px 10px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.32);
+        border: 1px solid rgba(29, 107, 93, 0.1);
+        text-align: center;
+      }
+      html[data-theme="dark"] .mini-metric {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(125, 208, 182, 0.1);
+      }
+      .mini-metric strong {
+        display: block;
+        font-size: 1.02rem;
+        letter-spacing: -0.03em;
+      }
+      .mini-metric span {
+        color: var(--text-soft);
+        font-size: 0.82rem;
+      }
+      .prediction-grid,
+      .summary-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+      .metric-value-lg {
+        font-size: clamp(1.2rem, 4vw, 1.6rem);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1.05;
+      }
+      .metric-value-inline {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .estimate-note {
+        margin-top: 16px;
+        font-size: 0.88rem;
+      }
+      details.collapsible {
+        overflow: hidden;
+      }
+      details > summary {
+        list-style: none;
+        cursor: pointer;
+      }
+      details > summary::-webkit-details-marker {
+        display: none;
+      }
+      .collapsible-summary {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding-right: 30px;
+      }
+      .collapsible-summary::after {
+        content: "";
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        width: 10px;
+        height: 10px;
+        border-right: 2px solid var(--text-soft);
+        border-bottom: 2px solid var(--text-soft);
+        transform: translateY(-70%) rotate(45deg);
+        transition: transform 180ms ease;
+      }
+      details[open] > summary .collapsible-summary::after {
+        transform: translateY(-25%) rotate(225deg);
+      }
+      .details-body {
+        margin-top: 18px;
+      }
+      .legend,
+      .subtle-chip-row,
+      .summary-badges,
+      .supplement-pills {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .history-tag,
+      .legend-chip,
+      .subtle-chip,
+      .supplement-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: var(--pill);
+        border: 1px solid rgba(29, 107, 93, 0.1);
+        color: var(--text);
+        font-size: 0.88rem;
+      }
+      .history-tag.warning,
+      .subtle-chip.warning,
+      .supplement-pill.is-missed {
+        background: rgba(181, 99, 40, 0.1);
+        border-color: rgba(181, 99, 40, 0.18);
+        color: var(--warning);
+      }
+      .history-tag.danger,
+      .subtle-chip.danger {
+        background: var(--danger-soft);
+        border-color: rgba(178, 69, 69, 0.18);
+        color: var(--danger);
+      }
+      .legend-dot,
+      .pill-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        flex: 0 0 auto;
+      }
+      .legend-dot.actual,
+      .pill-dot.actual {
+        background: var(--accent);
+      }
+      .legend-dot.forecast,
+      .pill-dot.forecast {
+        background: var(--accent-2);
+      }
+      .legend-dot.reference,
+      .pill-dot.reference {
+        background: rgba(125, 125, 125, 0.5);
+      }
+      .supplements-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .supplement-card {
+        position: relative;
+        padding: 18px;
+        border-radius: 24px;
+        background: linear-gradient(
+          180deg,
+          var(--surface-strong),
+          var(--surface)
+        );
+        border: 1px solid var(--card-border);
+        display: grid;
+        gap: 14px;
+        overflow: hidden;
+      }
+      .supplement-card.is-missed {
+        border-color: rgba(181, 99, 40, 0.24);
+        box-shadow: inset 0 0 0 1px rgba(181, 99, 40, 0.1);
+      }
+      .supplement-card::before {
+        content: "";
+        position: absolute;
+        inset: auto -40px -44px auto;
+        width: 120px;
+        height: 120px;
+        border-radius: 999px;
+        background: radial-gradient(
+          circle,
+          rgba(29, 107, 93, 0.1),
+          transparent 66%
+        );
+        pointer-events: none;
+      }
+      .supplement-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .supplement-name {
+        margin: 0;
+        font-size: 1.1rem;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+      }
+      .history-subtext,
+      .settings-copy,
+      .supplement-refill,
+      .supplement-subtitle {
+        color: var(--text-soft);
+        font-size: 0.9rem;
+        line-height: 1.45;
+      }
+      .supplement-amount-row {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .supplement-amount {
+        font-size: clamp(1.8rem, 6vw, 2.35rem);
+        font-weight: 800;
+        letter-spacing: -0.05em;
+        line-height: 0.96;
+      }
+      .supplement-unit {
+        padding-bottom: 6px;
+        font-weight: 700;
+        color: var(--text-soft);
+        font-size: 0.92rem;
+      }
+      .supplement-secondary {
+        min-height: 20px;
+        color: var(--text-soft);
+        font-size: 0.9rem;
+      }
+      .toggle-row {
+        display: grid;
+        gap: 10px;
+      }
+      .switch-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 18px;
+        background: var(--bg-soft);
+        border: 1px solid var(--card-border);
+      }
+      .switch-copy {
+        display: grid;
+        gap: 4px;
+      }
+      .switch-label {
+        font-weight: 700;
+        font-size: 0.94rem;
+      }
+      .switch-hint {
+        color: var(--text-soft);
+        font-size: 0.84rem;
+        line-height: 1.35;
+      }
+      .switch {
+        position: relative;
+        width: 54px;
+        height: 32px;
+        flex: 0 0 auto;
+      }
+      .switch input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      .slider {
+        position: absolute;
+        inset: 0;
+        border-radius: 999px;
+        background: rgba(110, 95, 73, 0.22);
+        transition: background-color 160ms ease;
+      }
+      .slider::before {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.16);
+        transition: transform 160ms ease;
+      }
+      .switch input:checked + .slider {
+        background: var(--accent);
+      }
+      .switch input:checked + .slider::before {
+        transform: translateX(22px);
+      }
+      .switch input:focus-visible + .slider {
+        box-shadow: 0 0 0 4px rgba(29, 107, 93, 0.12);
+      }
+      .refill-card {
+        padding: 14px 16px;
+        border-radius: 18px;
+        background: linear-gradient(
+          180deg,
+          rgba(29, 107, 93, 0.08),
+          rgba(29, 107, 93, 0.03)
+        );
+        border: 1px solid rgba(29, 107, 93, 0.12);
+        display: grid;
+        gap: 6px;
+      }
+      html[data-theme="dark"] .refill-card {
+        background: linear-gradient(
+          180deg,
+          rgba(125, 208, 182, 0.12),
+          rgba(125, 208, 182, 0.05)
+        );
+        border-color: rgba(125, 208, 182, 0.14);
+      }
+      .refill-card.warning {
+        background: rgba(181, 99, 40, 0.09);
+        border-color: rgba(181, 99, 40, 0.22);
+      }
+      .refill-heading {
+        font-size: 0.82rem;
+        color: var(--text-faint);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .refill-value {
+        font-size: 1.08rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+      .settings-details {
+        border-radius: 18px;
+        border: 1px solid var(--card-border);
+        background: var(--bg-soft);
+        overflow: hidden;
+      }
+      .settings-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 16px;
+        font-weight: 700;
+        position: relative;
+        padding-right: 32px;
+      }
+      .settings-summary::after {
+        content: "";
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        width: 10px;
+        height: 10px;
+        border-right: 2px solid var(--text-soft);
+        border-bottom: 2px solid var(--text-soft);
+        transform: translateY(-70%) rotate(45deg);
+        transition: transform 180ms ease;
+      }
+      details[open] > summary.settings-summary::after {
+        transform: translateY(-25%) rotate(225deg);
+      }
+      .settings-body {
+        display: grid;
+        gap: 12px;
+        padding: 0 16px 16px;
+      }
+      .settings-grid {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .subfield {
+        display: grid;
+        gap: 8px;
+      }
+      .subfield input {
+        width: 100%;
+        min-height: 46px;
+        border-radius: 14px;
+        border: 1px solid var(--card-border);
+        background: var(--surface-strong);
+        color: var(--text);
+        padding: 0 14px;
+        outline: 0;
+        appearance: none;
+        -webkit-appearance: none;
+      }
+      .subfield input:focus {
+        border-color: rgba(29, 107, 93, 0.36);
+        box-shadow: 0 0 0 4px rgba(29, 107, 93, 0.1);
+      }
+      .settings-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .mini-btn,
+      .preset-btn,
+      .tag-btn {
+        padding: 10px 14px;
+        min-height: 42px;
+        font-size: 0.9rem;
+      }
+      .chart-shell {
+        display: grid;
+        gap: 14px;
+      }
+      .chart-wrap {
+        position: relative;
+        min-height: 320px;
+        border-radius: 24px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 252, 248, 0.7),
+          rgba(255, 252, 248, 0.52)
+        );
+        border: 1px solid var(--card-border);
+        overflow: hidden;
+      }
+      html[data-theme="dark"] .chart-wrap {
+        background: linear-gradient(
+          180deg,
+          rgba(34, 40, 37, 0.74),
+          rgba(31, 36, 33, 0.6)
+        );
+      }
+      .chart-svg {
+        width: 100%;
+        height: 100%;
+        min-height: 320px;
+      }
+      .empty-state {
+        display: grid;
+        place-items: center;
+        min-height: 240px;
+        text-align: center;
+        padding: 32px 24px;
+        color: var(--text-soft);
+        line-height: 1.55;
+      }
+      .empty-state strong {
+        display: block;
+        color: var(--text);
+        font-size: 1.12rem;
+        margin-bottom: 8px;
+      }
+      .history-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      .history-list {
+        display: grid;
+        gap: 12px;
+      }
+      .history-card {
+        padding: 16px;
+        border-radius: 22px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 252, 248, 0.92),
+          rgba(255, 249, 243, 0.82)
+        );
+        border: 1px solid var(--card-border);
+        box-shadow: var(--shadow-soft);
+        display: grid;
+        gap: 14px;
+      }
+      html[data-theme="dark"] .history-card {
+        background: linear-gradient(
+          180deg,
+          rgba(35, 40, 37, 0.92),
+          rgba(31, 36, 33, 0.84)
+        );
+      }
+      .history-main {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 14px;
+      }
+      .history-date {
+        font-weight: 800;
+        font-size: 1.06rem;
+        letter-spacing: -0.02em;
+      }
+      .history-weight {
+        font-size: 1.38rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1;
+      }
+      .history-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .history-stat {
+        padding: 12px;
+        border-radius: 16px;
+        background: var(--bg-soft);
+        border: 1px solid var(--card-border);
+        display: grid;
+        gap: 6px;
+        min-height: 84px;
+      }
+      .history-actions {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 2px;
+        scrollbar-width: none;
+      }
+      .history-actions::-webkit-scrollbar {
+        display: none;
+      }
+      .history-actions .mini-btn {
+        white-space: nowrap;
+      }
+      .mini-btn.danger {
+        background: var(--danger-soft);
+        border-color: rgba(178, 69, 69, 0.2);
+        color: var(--danger);
+      }
+      .footer-note {
+        text-align: center;
+        color: var(--text-soft);
+        font-size: 0.9rem;
+        padding: 10px 6px 4px;
+      }
+      .toast-stack {
+        position: fixed;
+        left: 50%;
+        bottom: calc(env(safe-area-inset-bottom) + 22px);
+        transform: translateX(-50%);
+        display: grid;
+        gap: 10px;
+        width: min(94vw, 420px);
+        z-index: 60;
+        pointer-events: none;
+      }
+      .toast {
+        padding: 14px 16px;
+        border-radius: 18px;
+        background: rgba(31, 36, 33, 0.92);
+        color: #fff;
+        box-shadow: var(--shadow);
+        opacity: 0;
+        transform: translateY(10px);
+        animation:
+          toast-in 260ms ease forwards,
+          toast-out 260ms ease 3s forwards;
+      }
+      @keyframes toast-in {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes toast-out {
+        to {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+      }
+      .modal {
+        position: fixed;
+        inset: 0;
+        z-index: 70;
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 18px;
+        background: var(--overlay);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      .modal.is-open {
+        display: flex;
+      }
+      body.modal-open {
+        overflow: hidden;
+      }
+      .modal-card {
+        width: min(100%, 460px);
+        padding: 22px;
+        border-radius: 28px;
+        background: linear-gradient(
+          180deg,
+          var(--surface-strong),
+          var(--surface)
+        );
+        border: 1px solid var(--card-border);
+        box-shadow: var(--shadow);
+        display: grid;
+        gap: 16px;
+      }
+      .modal-card h3 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: 1.7rem;
+        line-height: 1;
+        letter-spacing: -0.03em;
+      }
+      .modal-card li,
+      .modal-card p {
+        color: var(--text-soft);
+        line-height: 1.55;
+      }
+      .modal-card ol {
+        margin: 0;
+        padding-left: 1.2rem;
+      }
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .ghost-btn:active,
+      .is-pressed:active,
+      .mini-btn:active,
+      .preset-btn:active,
+      .primary-btn:active,
+      .quick-btn:active,
+      .secondary-btn:active,
+      .tag-btn:active,
+      .text-btn:active,
+      .theme-btn:active {
+        transform: translateY(1px) scale(0.99);
+      }
+      @media (hover: hover) {
+        .ghost-btn:hover,
+        .mini-btn:hover,
+        .preset-btn:hover,
+        .primary-btn:hover,
+        .quick-btn:hover,
+        .secondary-btn:hover,
+        .tag-btn:hover,
+        .text-btn:hover,
+        .theme-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 14px 24px rgba(0, 0, 0, 0.08);
+        }
+      }
+      @media (max-width: 900px) {
+        .calculator-grid {
+          grid-template-columns: 1fr;
+        }
+        .prediction-grid,
+        .summary-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .supplements-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 720px) {
+        .app-shell {
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+        .app-header {
+          padding: 16px;
+        }
+        .quick-actions {
+          position: static;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          margin-bottom: 14px;
+        }
+        .comparison-strip,
+        .history-grid,
+        .mini-metrics,
+        .settings-grid {
+          grid-template-columns: 1fr;
+        }
+        .prediction-grid,
+        .summary-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .history-main {
+          flex-direction: column;
+        }
+      }
+      @media (max-width: 520px) {
+        .app-header {
+          top: calc(env(safe-area-inset-top) + 4px);
+        }
+        .brand h1 {
+          font-size: 2rem;
+        }
+        .quick-actions {
+          padding: 8px;
+          gap: 8px;
+        }
+        .prediction-grid,
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+        .collapsible,
+        .hero-card,
+        .prediction-card,
+        .summary-card {
+          padding: 18px;
+        }
+        .status-chip {
+          width: 100%;
+        }
+        .header-actions {
+          width: 100%;
+          justify-content: stretch;
+        }
+        .theme-switcher {
+          width: 100%;
+        }
+        .theme-btn {
+          min-width: 0;
+        }
+        .ghost-btn {
+          flex: 1 1 auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header card">
+        <div class="header-top">
+          <div class="brand">
+            <h1>Reggie Raw Feed</h1>
+            <p>
+              Raw feeding, supplements, growth tracking, and refill planning for
+              Reggie.
+            </p>
+          </div>
+          <div class="header-actions">
+            <div
+              class="theme-switcher"
+              role="group"
+              aria-label="Theme switcher"
+            >
+              <button
+                type="button"
+                class="theme-btn"
+                data-theme-choice="system"
+                aria-pressed="false"
+              >
+                System
+              </button>
+              <button
+                type="button"
+                class="theme-btn"
+                data-theme-choice="light"
+                aria-pressed="false"
+              >
+                Light
+              </button>
+              <button
+                type="button"
+                class="theme-btn"
+                data-theme-choice="dark"
+                aria-pressed="false"
+              >
+                Dark
+              </button>
+            </div>
+            <button type="button" class="ghost-btn hidden" id="installBtn">
+              Install App
+            </button>
+          </div>
+        </div>
+        <div class="status-chip" id="liveStatusChip" aria-live="polite">
+          <strong>Ready</strong>
+          <span>Enter a weight to start today's plan.</span>
+        </div>
+      </header>
+      <section
+        class="dashboard-row"
+        id="dashboardRow"
+        aria-label="Mini dashboard"
+      >
+        <div class="dashboard-chip">
+          <div class="dashboard-label">Today's food</div>
+          <div class="dashboard-value">-</div>
+          <div class="dashboard-meta">Waiting for a weight</div>
+        </div>
+        <div class="dashboard-chip">
+          <div class="dashboard-label">Supplements active</div>
+          <div class="dashboard-value">4 active</div>
+          <div class="dashboard-meta">All daily cards included</div>
+        </div>
+        <div class="dashboard-chip">
+          <div class="dashboard-label">Last weight</div>
+          <div class="dashboard-value">-</div>
+          <div class="dashboard-meta">No saved history yet</div>
+        </div>
+        <div class="dashboard-chip">
+          <div class="dashboard-label">Weekly gain</div>
+          <div class="dashboard-value">-</div>
+          <div class="dashboard-meta">Save two weights to unlock</div>
+        </div>
+        <div class="dashboard-chip">
+          <div class="dashboard-label">Adult estimate midpoint</div>
+          <div class="dashboard-value">-</div>
+          <div class="dashboard-meta">Age-aware estimate</div>
+        </div>
+      </section>
+      <div class="quick-actions">
+        <button type="button" class="quick-btn" id="todayBtn">Today</button>
+        <button type="button" class="quick-btn" id="lastWeightBtn">
+          Last saved weight
+        </button>
+        <button type="button" class="quick-btn" id="quickSaveBtn">
+          Add or update weigh-in
+        </button>
+        <button type="button" class="quick-btn" id="supplementsBtn">
+          Supplements
+        </button>
+      </div>
+      <main class="content">
+        <section
+          class="card hero-card"
+          id="calculatorCard"
+          aria-labelledby="calculatorTitle"
+        >
+          <div class="section-head">
+            <div>
+              <h2 id="calculatorTitle">Daily calculator</h2>
+              <p>
+                Pick a date, enter Reggie's weight, and the full feeding and
+                supplement plan updates instantly.
+              </p>
+            </div>
+            <div class="action-row">
+              <button type="button" class="primary-btn" id="saveEntryBtn">
+                Add weigh-in
+              </button>
+            </div>
+          </div>
+          <div class="calculator-grid">
+            <div class="form-grid">
+              <div class="field">
+                <label for="selectedDate">Selected date</label>
+                <div class="input-shell">
+                  <input id="selectedDate" name="selectedDate" type="date" />
+                </div>
+                <div class="input-help">
+                  UK dates are shown everywhere else as day/month/year.
+                </div>
+              </div>
+              <div class="field">
+                <label for="weightInput">Weight</label>
+                <div class="input-shell">
+                  <input
+                    id="weightInput"
+                    name="weightInput"
+                    type="number"
+                    inputmode="decimal"
+                    min="0"
+                    step="0.1"
+                    placeholder="e.g. 18.4"
+                    aria-describedby="weightHelp"
+                  />
+                  <span class="input-unit">kg</span>
+                </div>
+                <div class="input-help" id="weightHelp">
+                  Use kilograms with one decimal place where helpful.
+                </div>
+              </div>
+              <div class="validation-stack">
+                <div
+                  class="message info is-visible"
+                  id="validationMessage"
+                  aria-live="polite"
+                >
+                  Enter a valid weight to unlock daily food and weight-based
+                  supplements.
+                </div>
+                <div
+                  class="message success"
+                  id="saveMessage"
+                  aria-live="polite"
+                ></div>
+              </div>
+              <div
+                class="comparison-strip"
+                id="comparisonStrip"
+                aria-live="polite"
+              ></div>
+            </div>
+            <div class="progress-panel">
+              <div class="ring-wrap">
+                <svg class="ring-svg" viewBox="0 0 160 160" aria-hidden="true">
+                  <defs>
+                    <linearGradient
+                      id="ringGradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="100%"
+                    >
+                      <stop offset="0%" stop-color="#d59d67"></stop>
+                      <stop offset="50%" stop-color="#3d9f89"></stop>
+                      <stop offset="100%" stop-color="#1d6b5d"></stop>
+                    </linearGradient>
+                  </defs>
+                  <circle class="ring-track" cx="80" cy="80" r="60"></circle>
+                  <circle
+                    class="ring-progress"
+                    id="progressRing"
+                    cx="80"
+                    cy="80"
+                    r="60"
+                    stroke-dasharray="377"
+                    stroke-dashoffset="377"
+                  ></circle>
+                </svg>
+                <div class="ring-center">
+                  <div>
+                    <div class="ring-kicker">Age progress</div>
+                    <div class="ring-value" id="ringValue">-</div>
+                    <div class="ring-caption" id="ringCaption">
+                      Waiting for a valid date
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="stage-chip" id="stageBadge">Stage pending</div>
+              <div class="mini-metrics" id="ageMetricGrid">
+                <div class="mini-metric">
+                  <strong>-</strong> <span>Days old</span>
+                </div>
+                <div class="mini-metric">
+                  <strong>-</strong> <span>Weeks old</span>
+                </div>
+                <div class="mini-metric">
+                  <strong>-</strong> <span>Months used</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section
+          class="card summary-card"
+          aria-labelledby="feedingSummaryTitle"
+        >
+          <div class="section-head">
+            <div>
+              <h2 id="feedingSummaryTitle">Feeding summary</h2>
+              <p>
+                Daily food targets follow Reggie's age band and the raw feeding
+                percentages you specified.
+              </p>
+            </div>
+            <div class="summary-badges" id="feedingBadgeRow"></div>
+          </div>
+          <div class="summary-grid" id="feedingSummaryGrid"></div>
+        </section>
+        <section class="card prediction-card" aria-labelledby="predictionTitle">
+          <div class="section-head">
+            <div>
+              <h2 id="predictionTitle">Adult weight prediction</h2>
+              <p>
+                Age-aware male Rottweiler reference ranges help keep the
+                estimate realistic without pretending to be exact.
+              </p>
+            </div>
+          </div>
+          <div class="prediction-grid" id="predictionGrid"></div>
+          <p class="estimate-note" id="predictionNote">
+            Estimate only, using a broad male Rottweiler growth reference rather
+            than veterinary certainty.
+          </p>
+        </section>
+        <details
+          class="card collapsible"
+          id="supplementsSection"
+          data-section="supplements"
+          open
+        >
+          <summary>
+            <div class="collapsible-summary">
+              <div>
+                <h2>Supplements</h2>
+                <p>
+                  Daily doses, refill planning, and date-based missed tracking
+                  live together here.
+                </p>
+              </div>
+              <div class="summary-badges" id="supplementBadgeRow"></div>
+            </div>
+          </summary>
+          <div class="details-body">
+            <div class="subtle-chip-row" id="supplementSummaryChips"></div>
+            <div class="supplement-pills" id="supplementSummaryPills"></div>
+            <div class="supplements-grid" id="supplementsGrid"></div>
+          </div>
+        </details>
+        <details
+          class="card collapsible"
+          id="chartSection"
+          data-section="chart"
+          open
+        >
+          <summary>
+            <div class="collapsible-summary">
+              <div>
+                <h2>Weight chart</h2>
+                <p>
+                  Saved weigh-ins are plotted against an expected male
+                  Rottweiler growth band, with a short forecast line when enough
+                  history exists.
+                </p>
+              </div>
+            </div>
+          </summary>
+          <div class="details-body chart-shell">
+            <div class="legend">
+              <div class="legend-chip">
+                <span class="legend-dot actual"></span>Actual
+              </div>
+              <div class="legend-chip">
+                <span class="legend-dot forecast"></span>Forecast
+              </div>
+              <div class="legend-chip">
+                <span class="legend-dot reference"></span>Reference zone
+              </div>
+            </div>
+            <div class="chart-wrap" id="chartWrap" aria-live="polite"></div>
+          </div>
+        </details>
+        <details
+          class="card collapsible"
+          id="historySection"
+          data-section="history"
+          open
+        >
+          <summary>
+            <div class="collapsible-summary">
+              <div>
+                <h2>Weight history</h2>
+                <p>
+                  Newest first, with edit and delete controls on every saved
+                  weigh-in.
+                </p>
+              </div>
+              <div class="summary-badges" id="historyBadgeRow"></div>
+            </div>
+          </summary>
+          <div class="details-body">
+            <div class="history-top">
+              <div class="subtle-chip-row" id="historyInsightChips"></div>
+              <button type="button" class="secondary-btn" id="clearHistoryBtn">
+                Clear all history
+              </button>
+            </div>
+            <div class="history-list" id="historyList" aria-live="polite"></div>
+          </div>
+        </details>
+        <footer class="footer-note">
+          Date of birth: 08/01/2026 - Saved locally on this device
+        </footer>
+      </main>
+    </div>
+    <div class="modal" id="confirmModal" aria-hidden="true">
+      <div
+        class="modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="confirmModalTitle"
+        aria-describedby="confirmModalBody"
+      >
+        <div>
+          <h3 id="confirmModalTitle">Confirm</h3>
+          <p id="confirmModalBody">Are you sure?</p>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="secondary-btn" id="confirmCancelBtn">
+            Cancel
+          </button>
+          <button type="button" class="primary-btn" id="confirmOkBtn">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="installModal" aria-hidden="true">
+      <div
+        class="modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="installModalTitle"
+        aria-describedby="installModalBody"
+      >
+        <div>
+          <h3 id="installModalTitle">Add to Home Screen</h3>
+          <div id="installModalBody">
+            <p>
+              On iPhone Safari, use the Share menu and choose
+              <strong>Add to Home Screen</strong> for the most reliable app-like
+              experience.
+            </p>
+            <ol>
+              <li>Open the Share sheet in Safari.</li>
+              <li>Scroll to <strong>Add to Home Screen</strong>.</li>
+              <li>
+                Confirm the icon to launch Reggie Raw Feed like an app on this
+                device.
+              </li>
+            </ol>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="primary-btn" id="installDismissBtn">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="toast-stack"
+      id="toastStack"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+    <script>
+      (() => {
+        const e = "2026-01-08",
+          t = {
+            history: "reggieRawFeedHistory",
+            supplementSettings: "reggieRawFeedSupplementSettings",
+            missed: "reggieRawFeedMissed",
+            sections: "reggieRawFeedSections",
+            theme: "reggieRawFeedTheme",
+          },
+          n = { min: 46, max: 60, midpoint: 53 },
+          i = { min: 44, max: 62 },
+          a = [
+            { month: 0, min: 0.8, max: 1.4, adultPct: 0.02 },
+            { month: 1, min: 2.8, max: 4.8, adultPct: 0.07 },
+            { month: 2, min: 7, max: 12, adultPct: 0.18 },
+            { month: 3, min: 12, max: 18, adultPct: 0.28 },
+            { month: 4, min: 18, max: 25, adultPct: 0.4 },
+            { month: 5, min: 22, max: 31, adultPct: 0.5 },
+            { month: 6, min: 27, max: 38, adultPct: 0.6 },
+            { month: 7, min: 31, max: 43, adultPct: 0.68 },
+            { month: 8, min: 34, max: 47, adultPct: 0.74 },
+            { month: 9, min: 37, max: 50, adultPct: 0.79 },
+            { month: 10, min: 39, max: 53, adultPct: 0.84 },
+            { month: 11, min: 41, max: 55, adultPct: 0.87 },
+            { month: 12, min: 42, max: 57, adultPct: 0.9 },
+            { month: 18, min: 45, max: 59, adultPct: 0.97 },
+            { month: 24, min: 46, max: 60, adultPct: 1 },
+          ],
+          s = [
+            {
+              month: 0,
+              baselineWeight: 0.74,
+              ratioWeight: 0.2,
+              fourMonthWeight: 0.06,
+              matureWeight: 0,
+              spread: 9,
+              confidence: 0.22,
+            },
+            {
+              month: 2,
+              baselineWeight: 0.48,
+              ratioWeight: 0.42,
+              fourMonthWeight: 0.1,
+              matureWeight: 0,
+              spread: 7.4,
+              confidence: 0.3,
+            },
+            {
+              month: 4,
+              baselineWeight: 0.24,
+              ratioWeight: 0.3,
+              fourMonthWeight: 0.46,
+              matureWeight: 0,
+              spread: 5.9,
+              confidence: 0.46,
+            },
+            {
+              month: 6,
+              baselineWeight: 0.18,
+              ratioWeight: 0.49,
+              fourMonthWeight: 0.25,
+              matureWeight: 0.08,
+              spread: 5.1,
+              confidence: 0.58,
+            },
+            {
+              month: 9,
+              baselineWeight: 0.16,
+              ratioWeight: 0.56,
+              fourMonthWeight: 0.14,
+              matureWeight: 0.14,
+              spread: 4.5,
+              confidence: 0.68,
+            },
+            {
+              month: 12,
+              baselineWeight: 0.14,
+              ratioWeight: 0.42,
+              fourMonthWeight: 0.05,
+              matureWeight: 0.39,
+              spread: 3.9,
+              confidence: 0.78,
+            },
+            {
+              month: 18,
+              baselineWeight: 0.16,
+              ratioWeight: 0.2,
+              fourMonthWeight: 0,
+              matureWeight: 0.64,
+              spread: 3.3,
+              confidence: 0.9,
+            },
+            {
+              month: 24,
+              baselineWeight: 0.18,
+              ratioWeight: 0.08,
+              fourMonthWeight: 0,
+              matureWeight: 0.74,
+              spread: 2.8,
+              confidence: 0.96,
+            },
+          ],
+          l = {
+            salmonOil: {
+              id: "salmonOil",
+              name: "Scottish Salmon Oil",
+              unit: "pumps/day",
+              subtitle: "Based on 1 pump per 10kg",
+              defaultSettings: {
+                include: !0,
+                packSize: "2500",
+                remaining: "2500",
+                mlPerPump: "5",
+              },
+            },
+            pumpkinPowder: {
+              id: "pumpkinPowder",
+              name: "Pumpkin Powder",
+              unit: "tsp/day",
+              subtitle: "Based on 1/2 tsp per 5kg",
+              defaultSettings: {
+                include: !0,
+                packSize: "200",
+                remaining: "200",
+                gramsPerTsp: "2.5",
+              },
+            },
+            greenLippedMussel: {
+              id: "greenLippedMussel",
+              name: "Green-Lipped Mussel Powder",
+              unit: "g/day",
+              subtitle: "Based on 0.5g per 10kg",
+              defaultSettings: {
+                include: !0,
+                packSize: "250",
+                remaining: "250",
+              },
+            },
+            plaquePowder: {
+              id: "plaquePowder",
+              name: "Plaque Powder",
+              unit: "tsp/day",
+              subtitle: "Fixed daily amount",
+              defaultSettings: {
+                include: !0,
+                packSize: "180",
+                remaining: "180",
+                gramsPerTsp: "2",
+              },
+            },
+          },
+          o = 864e5,
+          r = b(e),
+          d = {
+            selectedDate: document.getElementById("selectedDate"),
+            weightInput: document.getElementById("weightInput"),
+            validationMessage: document.getElementById("validationMessage"),
+            saveMessage: document.getElementById("saveMessage"),
+            saveEntryBtn: document.getElementById("saveEntryBtn"),
+            quickSaveBtn: document.getElementById("quickSaveBtn"),
+            todayBtn: document.getElementById("todayBtn"),
+            lastWeightBtn: document.getElementById("lastWeightBtn"),
+            supplementsBtn: document.getElementById("supplementsBtn"),
+            liveStatusChip: document.getElementById("liveStatusChip"),
+            comparisonStrip: document.getElementById("comparisonStrip"),
+            progressRing: document.getElementById("progressRing"),
+            ringValue: document.getElementById("ringValue"),
+            ringCaption: document.getElementById("ringCaption"),
+            stageBadge: document.getElementById("stageBadge"),
+            ageMetricGrid: document.getElementById("ageMetricGrid"),
+            dashboardRow: document.getElementById("dashboardRow"),
+            feedingBadgeRow: document.getElementById("feedingBadgeRow"),
+            feedingSummaryGrid: document.getElementById("feedingSummaryGrid"),
+            predictionGrid: document.getElementById("predictionGrid"),
+            predictionNote: document.getElementById("predictionNote"),
+            supplementBadgeRow: document.getElementById("supplementBadgeRow"),
+            supplementSummaryChips: document.getElementById(
+              "supplementSummaryChips",
+            ),
+            supplementSummaryPills: document.getElementById(
+              "supplementSummaryPills",
+            ),
+            supplementsGrid: document.getElementById("supplementsGrid"),
+            chartWrap: document.getElementById("chartWrap"),
+            historyBadgeRow: document.getElementById("historyBadgeRow"),
+            historyInsightChips: document.getElementById("historyInsightChips"),
+            historyList: document.getElementById("historyList"),
+            clearHistoryBtn: document.getElementById("clearHistoryBtn"),
+            themeButtons: Array.from(document.querySelectorAll(".theme-btn")),
+            installBtn: document.getElementById("installBtn"),
+            themeColorMeta: document.getElementById("themeColorMeta"),
+            confirmModal: document.getElementById("confirmModal"),
+            confirmModalTitle: document.getElementById("confirmModalTitle"),
+            confirmModalBody: document.getElementById("confirmModalBody"),
+            confirmCancelBtn: document.getElementById("confirmCancelBtn"),
+            confirmOkBtn: document.getElementById("confirmOkBtn"),
+            installModal: document.getElementById("installModal"),
+            installDismissBtn: document.getElementById("installDismissBtn"),
+            toastStack: document.getElementById("toastStack"),
+            collapsibles: Array.from(
+              document.querySelectorAll("details[data-section]"),
+            ),
+          },
+          c = {
+            history: (function () {
+              const e = Y(t.history, []);
+              return Array.isArray(e)
+                ? e
+                    .map((e) => ({
+                      date: "string" == typeof e.date ? e.date : "",
+                      weightKg: te(Q(e.weightKg) || 0, 0.1),
+                    }))
+                    .filter((e) => {
+                      const t = b(e.date);
+                      return Boolean(t && t >= r && _(e.weightKg));
+                    })
+                    .sort(z)
+                    .reduce((e, t) => {
+                      const n = e.findIndex((e) => e.date === t.date);
+                      return (n >= 0 ? (e[n] = t) : e.push(t), e);
+                    }, [])
+                : [];
+            })(),
+            supplementSettings: G(Y(t.supplementSettings, {})),
+            missedState: (function () {
+              const e = Y(t.missed, {});
+              if (!e || "object" != typeof e || Array.isArray(e)) return {};
+              const n = {};
+              return (
+                Object.entries(e).forEach(([e, t]) => {
+                  if (!b(e) || !t || "object" != typeof t || Array.isArray(t))
+                    return;
+                  const i = {};
+                  (Object.keys(l).forEach((e) => {
+                    "boolean" == typeof t[e] && (i[e] = t[e]);
+                  }),
+                    Object.keys(i).length && (n[e] = i));
+                }),
+                n
+              );
+            })(),
+            sections: (function () {
+              const e = Y(t.sections, {});
+              if (!e || "object" != typeof e || Array.isArray(e)) return {};
+              const n = {};
+              return (
+                d.collapsibles.forEach((t) => {
+                  const i = t.dataset.section;
+                  Object.prototype.hasOwnProperty.call(e, i) &&
+                    (n[i] = Boolean(e[i]));
+                }),
+                n
+              );
+            })(),
+            themePreference: (function () {
+              const e = Y(t.theme, "system");
+              return ["system", "light", "dark"].includes(e) ? e : "system";
+            })(),
+            deferredPrompt: null,
+            lastSaveMessage: "",
+            confirmResolve: null,
+            currentModal: null,
+            modalPreviousFocus: null,
+          };
+        function u() {
+          const e = f();
+          if ((j(), !e.isDateValid))
+            return void H(
+              "warning",
+              "Selected date cannot be earlier than Reggie's date of birth.",
+            );
+          if (!_(e.weightKg))
+            return void H(
+              "warning",
+              "Enter a valid weight above 0kg before saving a weigh-in.",
+            );
+          const t = c.history.find((t) => t.date === e.selectedDateIso),
+            n = { date: e.selectedDateIso, weightKg: te(e.weightKg, 0.1) };
+          ((c.history = (function (e, t) {
+            const n = Array.isArray(t) ? [...t] : [],
+              i = n.findIndex((t) => t.date === e.date);
+            i >= 0 ? (n[i] = e) : n.push(e);
+            return n.sort(z);
+          })(n, c.history)),
+            I(c.history));
+          const i = t
+            ? `Updated ${k(b(e.selectedDateIso))}.`
+            : `Saved ${k(b(e.selectedDateIso))}.`;
+          ((c.lastSaveMessage = i), O(i), N(i), h());
+        }
+        function m(e) {
+          const n = e.target,
+            i = d.selectedDate.value;
+          if (i) {
+            if (n.matches("[data-action='toggle-include']")) {
+              const e = n.dataset.supplement;
+              return (
+                q(e),
+                (c.supplementSettings[e].include = n.checked),
+                L(c.supplementSettings),
+                void h()
+              );
+            }
+            if (n.matches("[data-action='toggle-missed']")) {
+              const e = n.dataset.supplement;
+              return (
+                c.missedState[i] || (c.missedState[i] = {}),
+                (c.missedState[i][e] = n.checked),
+                (a = c.missedState),
+                J(t.missed, a),
+                void h()
+              );
+            }
+            var a;
+            if (n.matches("[data-setting-field]")) {
+              const e = n.dataset.supplement,
+                t = n.dataset.settingField;
+              (q(e),
+                (c.supplementSettings[e][t] = n.value),
+                L(c.supplementSettings),
+                h());
+            }
+          }
+        }
+        function g(e) {
+          const t = e.target.closest("[data-setting-action]");
+          if (!t) return;
+          const n = t.dataset.supplement,
+            i = t.dataset.settingAction;
+          q(n);
+          const a = c.supplementSettings[n];
+          if (
+            ("preset-salmon-2500" === i &&
+              ((a.packSize = "2500"),
+              (a.remaining = "2500"),
+              a.mlPerPump ||
+                (a.mlPerPump = l.salmonOil.defaultSettings.mlPerPump),
+              L(c.supplementSettings),
+              N("Scottish Salmon Oil set to a full 2500ml bottle."),
+              h()),
+            "reset-full" === i)
+          ) {
+            const e = a.packSize;
+            if (!_(Q(e))) return void N("Set a pack size first.");
+            ((a.remaining = String(Q(e))),
+              L(c.supplementSettings),
+              N("Remaining amount reset to full pack size."),
+              h());
+          }
+        }
+        async function p(e) {
+          const t = e.target.closest("[data-history-action]");
+          if (!t) return;
+          const n = t.dataset.historyAction,
+            i = t.dataset.date,
+            a = c.history.find((e) => e.date === i);
+          if (
+            ("edit" === n &&
+              a &&
+              ((d.selectedDate.value = a.date),
+              (d.weightInput.value = ae(a.weightKg)),
+              j(),
+              h(),
+              document
+                .getElementById("calculatorCard")
+                .scrollIntoView({ behavior: "smooth", block: "start" })),
+            "delete" === n && a)
+          ) {
+            if (
+              !(await C(
+                `Delete ${k(b(a.date))}?`,
+                `This will remove the ${ie(a.weightKg)} weigh-in from history.`,
+              ))
+            )
+              return;
+            ((c.history = (function (e, t) {
+              return (Array.isArray(t) ? t : [])
+                .filter((t) => t.date !== e)
+                .sort(z);
+            })(a.date, c.history)),
+              I(c.history),
+              N("Weigh-in deleted."),
+              h());
+          }
+        }
+        function h() {
+          const e = f();
+          (H(e.validation.type, e.validation.message),
+            c.lastSaveMessage && O(c.lastSaveMessage),
+            (function (e) {
+              const t = e.isDateValid
+                  ? `${ne(e.weeks)} old`
+                  : "Pick a valid date",
+                n = _(e.weightKg) ? `${ie(e.weightKg)}` : "No weight entered";
+              d.liveStatusChip.innerHTML = `<strong>${pe(t)}</strong><span>${pe(n)}</span>`;
+            })(e),
+            (function (e) {
+              const t = Object.values(e.supplements).filter(
+                  (e) => e.included,
+                ).length,
+                n = Object.values(e.supplements).filter((e) => e.missed).length,
+                i = e.historyDesc[0],
+                a = e.growthVelocity.latest
+                  ? `${le(e.growthVelocity.latest.kgPerWeek, 2)} kg/wk`
+                  : "-",
+                s =
+                  null != e.growthVelocity.avgLast3
+                    ? `Avg ${le(e.growthVelocity.avgLast3, 2)} kg/wk`
+                    : "Save more history to average",
+                l =
+                  e.selectedDateIso === e.todayIso
+                    ? "Current plan"
+                    : "Selected date preview",
+                o =
+                  null != e.prediction.midpoint
+                    ? `${se(e.prediction.midpoint)} kg`
+                    : "-",
+                r = e.prediction.confidence
+                  ? `${e.prediction.confidence} confidence`
+                  : e.isDateValid
+                    ? "Age-aware estimate"
+                    : "Choose a valid date",
+                c = [
+                  {
+                    label: "Today's food",
+                    value:
+                      null != e.food.gramsPerDay
+                        ? `${e.food.gramsPerDay} g/day`
+                        : "-",
+                    meta:
+                      null != e.food.gramsPerDay
+                        ? l
+                        : e.isDateValid
+                          ? "Waiting for a weight"
+                          : "Choose a valid date",
+                  },
+                  {
+                    label: "Supplements active",
+                    value: `${t} active`,
+                    meta: n
+                      ? `${n} missed ${e.selectedDateIso === e.todayIso ? "today" : "on selected date"}`
+                      : "Daily summary ready",
+                  },
+                  {
+                    label: "Last weight",
+                    value: i ? ie(i.weightKg) : "-",
+                    meta: i ? k(b(i.date)) : "No saved history yet",
+                  },
+                  {
+                    label: "Weekly gain",
+                    value: a,
+                    meta: e.growthVelocity.latest
+                      ? s
+                      : "Save two weights to unlock",
+                  },
+                  { label: "Adult estimate midpoint", value: o, meta: r },
+                ];
+              ((d.dashboardRow.innerHTML = c
+                .map(
+                  (e) =>
+                    `\n <div class="dashboard-chip">\n <div class="dashboard-label">${pe(e.label)}</div>\n <div class="dashboard-value">${pe(e.value)}</div>\n <div class="dashboard-meta">${pe(e.meta)}</div>\n </div>\n `,
+                )
+                .join("")),
+                (d.lastWeightBtn.disabled = !i));
+            })(e),
+            (function (e) {
+              const t = e.existingEntry ? "Update weigh-in" : "Add weigh-in";
+              ((d.saveEntryBtn.textContent = t),
+                (d.quickSaveBtn.textContent = t));
+              const n = e.isDateValid && _(e.weightKg);
+              ((d.saveEntryBtn.disabled = !n), (d.quickSaveBtn.disabled = !n));
+              const i =
+                  e.isDateValid && null != e.days ? re(e.days / 365, 0, 1) : 0,
+                a = 2 * Math.PI * 60;
+              ((d.progressRing.style.strokeDasharray = String(a)),
+                (d.progressRing.style.strokeDashoffset = String(a * (1 - i))),
+                (d.ringValue.textContent = e.isDateValid
+                  ? `${se(e.monthsExact)}m`
+                  : "-"),
+                (d.ringCaption.textContent = e.isDateValid
+                  ? `${e.days} days from birth`
+                  : "Waiting for a valid date"),
+                (d.stageBadge.textContent = e.stageLabel));
+              const s = [
+                {
+                  label: "Days old",
+                  value: null != e.days ? String(e.days) : "-",
+                },
+                {
+                  label: "Weeks old",
+                  value: null != e.weeks ? ne(e.weeks) : "-",
+                },
+                {
+                  label: "Months used",
+                  value: null != e.months ? String(e.months) : "-",
+                },
+              ];
+              d.ageMetricGrid.innerHTML = s
+                .map(
+                  (e) =>
+                    `\n <div class="mini-metric">\n <strong>${pe(e.value)}</strong>\n <span>${pe(e.label)}</span>\n </div>\n `,
+                )
+                .join("");
+              const l = [];
+              e.changeSinceLast
+                ? l.push({
+                    label: "Change since last entry",
+                    value: `${le(e.changeSinceLast.diffKg, 1)} kg`,
+                    meta: `${le(e.changeSinceLast.diffPct, 0)}% vs previous saved weight`,
+                  })
+                : l.push({
+                    label: "Change since last entry",
+                    value: "-",
+                    meta: "Save at least one weight to compare",
+                  });
+              e.existingEntry
+                ? l.push({
+                    label: "Selected date",
+                    value: "Existing entry found",
+                    meta: `Saving will replace ${k(b(e.existingEntry.date))}`,
+                  })
+                : l.push({
+                    label: "Selected date",
+                    value: e.isDateValid ? "New weigh-in" : "Invalid date",
+                    meta: e.isDateValid
+                      ? `Ready to save ${k(e.selectedDate)}`
+                      : "Dates before birth are blocked",
+                  });
+              d.comparisonStrip.innerHTML = l
+                .map(
+                  (e) =>
+                    `\n <div class="info-tile">\n <div class="tile-label">${pe(e.label)}</div>\n <div class="tile-value">${pe(e.value)}</div>\n <div class="history-subtext">${pe(e.meta)}</div>\n </div>\n `,
+                )
+                .join("");
+            })(e),
+            (function (e) {
+              const t = [];
+              e.isDateValid && t.push(ge(e.stageLabel));
+              null != e.food.percent &&
+                t.push(ge(`${Math.round(100 * e.food.percent)}% feeding`));
+              null != e.food.meals && t.push(ge(`${e.food.meals} meals/day`));
+              d.feedingBadgeRow.innerHTML = t.join("");
+              const n = [
+                {
+                  label: "Stage",
+                  value: e.isDateValid ? e.stageLabel : "-",
+                  meta: "Simple age band for quick context",
+                },
+                {
+                  label: "Feeding percentage",
+                  value:
+                    null != e.food.percent
+                      ? `${Math.round(100 * e.food.percent)}%`
+                      : "-",
+                  meta: "Based on whole feeding months",
+                },
+                {
+                  label: "Total grams per day",
+                  value:
+                    null != e.food.gramsPerDay ? `${e.food.gramsPerDay}g` : "-",
+                  meta: "Whole grams",
+                },
+                {
+                  label: "Meals per day",
+                  value: null != e.food.meals ? String(e.food.meals) : "-",
+                  meta: "Age-based meal count",
+                },
+                {
+                  label: "Grams per meal",
+                  value:
+                    null != e.food.gramsPerMeal
+                      ? `${e.food.gramsPerMeal}g`
+                      : "-",
+                  meta: "Whole grams",
+                },
+              ];
+              d.feedingSummaryGrid.innerHTML = n
+                .map(
+                  (e) =>
+                    `\n <div class="metric-tile">\n <div class="tile-label">${pe(e.label)}</div>\n <div class="metric-value-lg">${pe(e.value)}</div>\n <div class="metric-subtext">${pe(e.meta)}</div>\n </div>\n `,
+                )
+                .join("");
+            })(e),
+            (function (e) {
+              const t = e.prediction,
+                n = [
+                  {
+                    label: "Broad adult range",
+                    value:
+                      null != t.low && null != t.high
+                        ? `${se(t.low)} to ${se(t.high)} kg`
+                        : "-",
+                    meta: "Reference estimate, not a single exact claim",
+                  },
+                  {
+                    label: "Reference midpoint",
+                    value: null != t.midpoint ? `${se(t.midpoint)} kg` : "-",
+                    meta: "Best blended midpoint",
+                  },
+                  {
+                    label: "Estimate confidence",
+                    value: t.confidence || "-",
+                    meta: "Broader when Reggie is younger",
+                  },
+                  {
+                    label: "Current % of midpoint",
+                    value:
+                      null != t.percentOfMidpoint
+                        ? `${t.percentOfMidpoint}%`
+                        : "-",
+                    meta: "Current weight relative to the midpoint",
+                  },
+                  {
+                    label: "Growth position",
+                    value: e.growthPosition,
+                    meta: "Reference only, not a diagnosis",
+                  },
+                ];
+              ((d.predictionGrid.innerHTML = n
+                .map(
+                  (e) =>
+                    `\n <div class="metric-tile">\n <div class="tile-label">${pe(e.label)}</div>\n <div class="metric-value-lg">${pe(e.value)}</div>\n <div class="metric-subtext">${pe(e.meta)}</div>\n </div>\n `,
+                )
+                .join("")),
+                (d.predictionNote.textContent =
+                  t.note ||
+                  "Broad reference estimate only, using male Rottweiler growth ranges rather than veterinary certainty."));
+            })(e),
+            (function (e) {
+              const t = Object.values(e.supplements),
+                n = t.filter((e) => e.included).length,
+                i = t.filter((e) => e.missed).length,
+                a =
+                  e.selectedDateIso === e.todayIso
+                    ? "today"
+                    : "on selected date";
+              d.supplementBadgeRow.innerHTML = [
+                ge(`${n} active`),
+                ge(
+                  i ? `${i} missed ${a}` : `None missed ${a}`,
+                  i ? "warning" : "",
+                ),
+              ].join("");
+              const s = [
+                ge(`${n} supplements in summary`),
+                ge(
+                  i
+                    ? `${i} supplement${1 === i ? "" : "s"} missed ${a}`
+                    : `No supplements missed ${a}`,
+                  i ? "warning" : "",
+                ),
+              ];
+              e.isDateValid ||
+                s.push(ge("Fix the date to enable missed tracking", "danger"));
+              d.supplementSummaryChips.innerHTML = s.join("");
+              const l = t.filter((e) => e.included);
+              l.length
+                ? (d.supplementSummaryPills.innerHTML = l
+                    .map((e) => {
+                      const t = e.displayAmountText
+                        ? `${e.name}: ${e.displayAmountText}`
+                        : `${e.name}: -`;
+                      return `<div class="${e.missed ? "supplement-pill is-missed" : "supplement-pill"}">${pe(t)}${e.missed ? " - missed" : ""}</div>`;
+                    })
+                    .join(""))
+                : (d.supplementSummaryPills.innerHTML =
+                    '<div class="supplement-pill">No supplements included in the daily summary.</div>');
+              d.supplementsGrid.innerHTML = t
+                .map((t) => {
+                  const n =
+                      e.selectedDateIso === e.todayIso
+                        ? "Missed today"
+                        : "Missed on selected date",
+                    i = t.included
+                      ? "Included in the summary badges"
+                      : "Hidden from the summary badges",
+                    a = t.settings,
+                    s = t.missed
+                      ? "supplement-card is-missed"
+                      : "supplement-card",
+                    l = t.secondaryText || "&nbsp;",
+                    o = t.refillAlert ? "refill-card warning" : "refill-card",
+                    r = t.remainingLabel;
+                  return `\n <article class="${s}">\n <div class="supplement-top">\n <div>\n <h3 class="supplement-name">${pe(t.name)}</h3>\n <div class="supplement-subtitle">${pe(t.subtitle)}</div>\n </div>\n ${t.missed ? '<div class="history-tag warning">Marked missed</div>' : ""}\n </div>\n\n <div class="supplement-amount-row">\n <div class="supplement-amount">${pe(t.displayValue)}</div>\n <div class="supplement-unit">${pe(t.displayUnit)}</div>\n </div>\n\n <div class="supplement-secondary">${l}</div>\n\n <div class="toggle-row">\n <div class="switch-row">\n <div class="switch-copy">\n <div class="switch-label">Include in summary</div>\n <div class="switch-hint">${pe(i)}</div>\n </div>\n <label class="switch" aria-label="Include ${t.name} in summary">\n <input type="checkbox" data-action="toggle-include" data-supplement="${t.id}" ${t.included ? "checked" : ""}>\n <span class="slider"></span>\n </label>\n </div>\n\n <div class="switch-row">\n <div class="switch-copy">\n <div class="switch-label">${pe(n)}</div>\n <div class="switch-hint">Stored against ${pe(k(b(e.selectedDateIso)))}</div>\n </div>\n <label class="switch" aria-label="${n} for ${t.name}">\n <input type="checkbox" data-action="toggle-missed" data-supplement="${t.id}" ${t.missed ? "checked" : ""} ${e.isDateValid ? "" : "disabled"}>\n <span class="slider"></span>\n </label>\n </div>\n </div>\n\n <div class="${o}">\n <div class="refill-heading">Refill estimate</div>\n <div class="refill-value">${pe(t.refillTitle)}</div>\n <div class="supplement-refill">${pe(t.refillDetail)}</div>\n </div>\n\n <details class="settings-details">\n <summary class="settings-summary">Refill settings</summary>\n <div class="settings-body">\n <div class="settings-copy">${pe(t.settingsHint)}</div>\n <div class="settings-grid">\n ${t.fields
+                    .map((e) => {
+                      return `\n <div class="subfield">\n <label for="${t.id}-${e.key}">${pe(e.label)}</label>\n <input id="${t.id}-${e.key}" type="number" inputmode="decimal" step="0.1" min="0" placeholder="${pe(e.placeholder)}" value="${((n = a[e.key] ?? ""), pe(n))}" data-setting-field="${e.key}" data-supplement="${t.id}">\n </div>\n `;
+                      var n;
+                    })
+                    .join(
+                      "",
+                    )}\n </div>\n <div class="settings-actions">\n ${t.extraActions}\n <button type="button" class="mini-btn" data-setting-action="reset-full" data-supplement="${t.id}">Reset remaining to full</button>\n </div>\n <div class="settings-copy">${pe(r)}</div>\n </div>\n </details>\n </article>\n `;
+                })
+                .join("");
+            })(e),
+            (function (e) {
+              if (!e.historyAsc.length)
+                return void (d.chartWrap.innerHTML =
+                  '\n <div class="empty-state">\n <div>\n <strong>No weight history yet</strong>\n Save Reggie\'s weigh-ins to build the trend line, growth zone overlay, and short forecast.\n </div>\n </div>\n ');
+              const t = e.historyAsc
+                  .map((e) => ({
+                    date: b(e.date),
+                    weight: e.weightKg,
+                    iso: e.date,
+                  }))
+                  .filter((e) => e.date),
+                n = e.forecast
+                  .map((e) => ({
+                    date: b(e.date),
+                    weight: e.weightKg,
+                    iso: e.date,
+                  }))
+                  .filter((e) => e.date),
+                i = t.concat(n).map((e) => e.date.getTime()),
+                a = 1 === i.length;
+              let s = Math.min(...i),
+                l = Math.max(...i);
+              if (a) ((s -= 7 * o), (l += 21 * o));
+              else {
+                const e = Math.max(l - s, 14 * o);
+                ((s -= 0.06 * e), (l += 0.06 * e));
+              }
+              const c = [],
+                u = 18;
+              for (let e = 0; e < u; e += 1) {
+                const t = s + ((l - s) * e) / (u - 1),
+                  n = P(B(r, new Date(t)));
+                c.push({ time: t, low: n.min, high: n.max });
+              }
+              const m = [
+                ...t.map((e) => e.weight),
+                ...n.map((e) => e.weight),
+                ...c.flatMap((e) => [e.low, e.high]),
+              ].filter((e) => Number.isFinite(e));
+              if (!m.length)
+                return void (d.chartWrap.innerHTML =
+                  '\n <div class="empty-state">\n <div>\n <strong>Chart unavailable</strong>\n The saved history could not be plotted cleanly. Save another weight to rebuild the view.\n </div>\n </div>\n ');
+              let g = Math.min(...m),
+                p = Math.max(...m);
+              if (g === p) ((g = Math.max(0, g - 2)), (p += 2));
+              else {
+                const e = Math.max(1.4, 0.16 * (p - g));
+                ((g = Math.max(0, g - e)), (p += e));
+              }
+              const h = 900,
+                f = 340,
+                y = { top: 24, right: 18, bottom: 48, left: 58 },
+                v = h - y.left - y.right,
+                w = f - y.top - y.bottom,
+                $ = (e) => y.left + ((e - s) / (l - s || 1)) * v,
+                k = (e) => y.top + (1 - (e - g) / (p - g || 1)) * w,
+                x = c.map((e) => [$(e.time), k(e.high)]),
+                M = c
+                  .slice()
+                  .reverse()
+                  .map((e) => [$(e.time), k(e.low)]),
+                S = me(x.concat(M), !0),
+                E = t.map((e) => [$(e.date.getTime()), k(e.weight)]),
+                I = n.map((e) => [$(e.date.getTime()), k(e.weight)]),
+                L = (function (e, t, n) {
+                  const i = [],
+                    a = (t - e) / n;
+                  for (let t = 0; t <= n; t += 1) i.push(e + a * t);
+                  return i;
+                })(g, p, 4),
+                D = (function (e, t, n) {
+                  const i = [],
+                    a = new Intl.DateTimeFormat("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                    });
+                  for (let s = 0; s <= n; s += 1) {
+                    const l = e + ((t - e) * s) / n;
+                    i.push({ time: l, label: a.format(new Date(l)) });
+                  }
+                  return i;
+                })(s, l, 4),
+                A = E.length > 1 ? me(E) : "",
+                T =
+                  I.length > 0
+                    ? me(
+                        [
+                          [
+                            $(t[t.length - 1].date.getTime()),
+                            k(t[t.length - 1].weight),
+                          ],
+                        ].concat(I),
+                      )
+                    : "";
+              d.chartWrap.innerHTML = `\n <svg class="chart-svg" viewBox="0 0 ${h} ${f}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Weight history chart">\n <defs>\n <linearGradient id="chartAreaGradient" x1="0%" y1="0%" x2="0%" y2="100%">\n <stop offset="0%" stop-color="rgba(29,107,93,0.20)"></stop>\n <stop offset="100%" stop-color="rgba(29,107,93,0.02)"></stop>\n </linearGradient>\n </defs>\n\n <rect x="0" y="0" width="${h}" height="${f}" fill="transparent"></rect>\n <path d="${S}" fill="rgba(120, 120, 120, 0.12)" stroke="none"></path>\n\n ${L.map(
+                (e) => {
+                  const t = k(e);
+                  return `\n <g>\n <line x1="${y.left}" x2="${h - y.right}" y1="${t}" y2="${t}" stroke="var(--grid)" stroke-width="1"></line>\n <text x="${y.left - 10}" y="${t + 4}" text-anchor="end" fill="var(--text-faint)" font-size="12">${pe(se(e))}</text>\n </g>\n `;
+                },
+              ).join("")}\n\n ${D.map((e) => {
+                const t = $(e.time);
+                return `\n <g>\n <line x1="${t}" x2="${t}" y1="${y.top}" y2="${f - y.bottom}" stroke="rgba(255,255,255,0.01)" stroke-width="1"></line>\n <text x="${t}" y="${f - 16}" text-anchor="middle" fill="var(--text-faint)" font-size="12">${pe(e.label)}</text>\n </g>\n `;
+              }).join(
+                "",
+              )}\n\n <line x1="${y.left}" x2="${y.left}" y1="${y.top}" y2="${f - y.bottom}" stroke="var(--card-border-strong)" stroke-width="1.2"></line>\n <line x1="${y.left}" x2="${h - y.right}" y1="${f - y.bottom}" y2="${f - y.bottom}" stroke="var(--card-border-strong)" stroke-width="1.2"></line>\n\n ${A ? `<path d="${A}" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>` : ""}\n ${T ? `<path d="${T}" fill="none" stroke="var(--accent-2)" stroke-width="3" stroke-dasharray="9 8" stroke-linecap="round" stroke-linejoin="round"></path>` : ""}\n\n ${E.map((e, t) => `\n <g>\n <circle cx="${e[0]}" cy="${e[1]}" r="${t === E.length - 1 ? 6.5 : 5}" fill="var(--surface-strong)" stroke="var(--accent)" stroke-width="3"></circle>\n </g>\n `).join("")}\n\n ${I.map((e) => `\n <circle cx="${e[0]}" cy="${e[1]}" r="4.5" fill="var(--surface-strong)" stroke="var(--accent-2)" stroke-width="2.5"></circle>\n `).join("")}\n </svg>\n `;
+            })(e),
+            (function (e) {
+              const t = e.growthVelocity.latest,
+                n = e.growthVelocity.avgLast3,
+                i = e.growthVelocity.trend;
+              ((d.clearHistoryBtn.disabled = !e.historyDesc.length),
+                (d.historyBadgeRow.innerHTML = [
+                  ge(i ? `Trend: ${ue(i)}` : "Trend pending"),
+                  ge(
+                    t ? `${le(t.kgPerWeek, 2)} kg/week` : "Weekly gain pending",
+                  ),
+                ].join("")));
+              const a = [];
+              i &&
+                a.push(
+                  ge(
+                    `Latest trend: ${ue(i)}`,
+                    "falling" === i ? "warning" : "",
+                  ),
+                );
+              t && a.push(ge(`Latest velocity ${le(t.kgPerWeek, 2)} kg/week`));
+              null != n &&
+                a.push(
+                  ge(`Average across last 3 intervals ${le(n, 2)} kg/week`),
+                );
+              a.length ||
+                a.push(
+                  ge("Save two or more weights to unlock trend insights."),
+                );
+              if (
+                ((d.historyInsightChips.innerHTML = a.join("")),
+                !e.historyDesc.length)
+              )
+                return void (d.historyList.innerHTML =
+                  '\n <div class="empty-state">\n <div>\n <strong>No history saved yet</strong>\n Your weigh-ins will appear here with age, daily food, changes, and quick edit actions.\n </div>\n </div>\n ');
+              d.historyList.innerHTML = e.historyDesc
+                .map((t, n) => {
+                  const i = b(t.date),
+                    a = M(r, i),
+                    s = y(t.weightKg, S(r, i)),
+                    l = ee(e.historyAsc, t.date),
+                    o = l ? K(t.weightKg, l.weightKg) : null;
+                  return `\n <article class="history-card">\n <div class="history-main">\n <div>\n <div class="history-date">${pe(k(i))}</div>\n <div class="history-subtext">${pe(ne(a))} old</div>\n </div>\n <div class="history-weight">${pe(ie(t.weightKg))}</div>\n </div>\n\n <div class="history-grid">\n <div class="history-stat">\n <div class="tile-label">Food/day</div>\n <div class="metric-value-inline">${null != s.gramsPerDay ? `${s.gramsPerDay}g` : "-"}</div>\n <div class="history-subtext">${null != s.meals ? `${s.meals} meals - ${s.gramsPerMeal}g/meal` : "-"}</div>\n </div>\n <div class="history-stat">\n <div class="tile-label">Change</div>\n <div class="metric-value-inline">${o ? `${le(o.diffKg, 1)} kg` : "-"}</div>\n <div class="history-subtext">${o ? `${le(o.diffPct, 0)}% vs older entry` : "First saved entry"}</div>\n </div>\n <div class="history-stat">\n <div class="tile-label">Date type</div>\n <div class="metric-value-inline">${0 === n ? "Latest saved" : "Saved entry"}</div>\n <div class="history-subtext">${t.date === e.selectedDateIso ? "Loaded in calculator" : "Tap edit to load"}</div>\n </div>\n </div>\n\n <div class="history-actions">\n <button type="button" class="mini-btn" data-history-action="edit" data-date="${t.date}">Edit</button>\n <button type="button" class="mini-btn danger" data-history-action="delete" data-date="${t.date}">Delete</button>\n </div>\n </article>\n `;
+                })
+                .join("");
+            })(e),
+            T());
+        }
+        function f() {
+          const e = (d.selectedDate.value || "").trim(),
+            t = b(e),
+            a = $(new Date()),
+            o = (function (e) {
+              const t = Q(e);
+              return _(t) ? te(t, 0.1) : null;
+            })(d.weightInput.value),
+            u = Boolean(t && t >= r),
+            m = u ? x(r, t) : null,
+            g = u ? M(r, t) : null,
+            p = u ? S(r, t) : null,
+            h = u ? B(r, t) : null,
+            f = u
+              ? y(o, p)
+              : {
+                  percent: null,
+                  gramsPerDay: null,
+                  meals: null,
+                  gramsPerMeal: null,
+                },
+            I = u
+              ? (function (e) {
+                  return Number.isFinite(e)
+                    ? e < 2
+                      ? "Very young puppy"
+                      : e < 5
+                        ? "Young puppy"
+                        : e < 9
+                          ? "Growing puppy"
+                          : e < 12
+                            ? "Older puppy"
+                            : "Young adult"
+                    : "Stage pending";
+                })(h)
+              : "Stage pending",
+            L = u
+              ? (function (e, t) {
+                  if (!_(e) || !t)
+                    return {
+                      low: null,
+                      high: null,
+                      midpoint: null,
+                      confidence: "",
+                      percentOfMidpoint: null,
+                      note: "Estimate only, using a broad male Rottweiler growth reference rather than veterinary certainty.",
+                    };
+                  const a = B(r, t),
+                    l = P(a),
+                    o = re(l.adultPct || 0.5, 0.08, 1),
+                    d = re(e / o, i.min, i.max),
+                    c = P(4).adultPct || 0.4,
+                    u = re(e * ((2 * c) / o), i.min, i.max),
+                    m = re(e / re(o, 0.92, 1), i.min, i.max),
+                    g = n.midpoint,
+                    p = (function (e) {
+                      if (!Number.isFinite(e)) return s[0];
+                      if (e <= s[0].month) return { ...s[0] };
+                      if (e >= s[s.length - 1].month)
+                        return { ...s[s.length - 1] };
+                      for (let t = 0; t < s.length - 1; t += 1) {
+                        const n = s[t],
+                          i = s[t + 1];
+                        if (e >= n.month && e <= i.month) {
+                          const t = (e - n.month) / (i.month - n.month || 1);
+                          return {
+                            month: e,
+                            baselineWeight: de(
+                              n.baselineWeight,
+                              i.baselineWeight,
+                              t,
+                            ),
+                            ratioWeight: de(n.ratioWeight, i.ratioWeight, t),
+                            fourMonthWeight: de(
+                              n.fourMonthWeight,
+                              i.fourMonthWeight,
+                              t,
+                            ),
+                            matureWeight: de(n.matureWeight, i.matureWeight, t),
+                            spread: de(n.spread, i.spread, t),
+                            confidence: de(n.confidence, i.confidence, t),
+                          };
+                        }
+                      }
+                      return { ...s[s.length - 1] };
+                    })(a),
+                    h =
+                      p.baselineWeight +
+                        p.ratioWeight +
+                        p.fourMonthWeight +
+                        p.matureWeight || 1,
+                    f = re(
+                      (g * p.baselineWeight +
+                        d * p.ratioWeight +
+                        u * p.fourMonthWeight +
+                        m * p.matureWeight) /
+                        h,
+                      n.min,
+                      n.max,
+                    ),
+                    y = p.spread,
+                    v =
+                      p.confidence < 0.45
+                        ? "Low"
+                        : p.confidence < 0.76
+                          ? "Moderate"
+                          : "Stronger";
+                  let w = re(f - y, i.min, n.max),
+                    b = re(f + y, n.min, i.max);
+                  b - w < 4 &&
+                    ((w = re(f - 2.2, i.min, n.max)),
+                    (b = re(f + 2.2, n.min, i.max)));
+                  const $ = f ? Math.round((e / f) * 100) : null;
+                  return {
+                    low: w,
+                    high: b,
+                    midpoint: f,
+                    confidence: v,
+                    percentOfMidpoint: $,
+                    note: "Broad reference estimate only. It blends age-aware male Rottweiler growth ranges with current size and stays intentionally conservative rather than medical or exact.",
+                  };
+                })(o, t)
+              : {
+                  low: null,
+                  high: null,
+                  midpoint: null,
+                  confidence: "",
+                  percentOfMidpoint: null,
+                  note: "Estimate only, using a broad male Rottweiler growth reference rather than veterinary certainty.",
+                },
+            D = u
+              ? (function (e, t) {
+                  if (!_(e) || !t) return "-";
+                  const n = P(B(r, t)),
+                    i = Math.max(0.6, 0.08 * (n.max - n.min));
+                  return e < n.min - i
+                    ? "Below expected for age"
+                    : e > n.max + i
+                      ? "Above expected for age"
+                      : "Within expected range";
+                })(o, t)
+              : "-",
+            A = [...c.history].sort(z),
+            T = [...c.history].sort(U),
+            W = E(A),
+            C = (function (e) {
+              if (!Array.isArray(e) || e.length < 2) return [];
+              const t = E(e);
+              if (!t.latest) return [];
+              const n = t.intervals.slice(-2),
+                i = re(
+                  n.reduce((e, t) => e + t.kgPerWeek, 0) / n.length,
+                  -0.4,
+                  2,
+                ),
+                a = e[e.length - 1],
+                s = b(a.date);
+              return s
+                ? Array.from({ length: 4 }, (e, t) => {
+                    const n = t + 1,
+                      l = (function (e, t) {
+                        return new Date(
+                          e.getFullYear(),
+                          e.getMonth(),
+                          e.getDate() + t,
+                          12,
+                          0,
+                          0,
+                          0,
+                        );
+                      })(s, 7 * n);
+                    return {
+                      date: $(l),
+                      weightKg: te(Math.max(0, a.weightKg + i * n), 0.1),
+                    };
+                  })
+                : [];
+            })(A),
+            R = (function (e, t, n, i, a) {
+              const s = i[t] || {},
+                o = G(n),
+                r = Boolean(a),
+                d = r && _(e) ? e / 10 : null,
+                c = null != d ? te(d, 0.5) : null,
+                u = X(o.salmonOil.mlPerPump),
+                m = w(o.salmonOil),
+                g = null != d && null != u ? d * u : null,
+                p =
+                  null != u
+                    ? `Refill estimate uses ${oe(u, 1)} ml per pump.`
+                    : "Add ml per pump to estimate bottle life.",
+                h = r && _(e) ? (e / 5) * 0.5 : null,
+                f = null != h ? te(h, 0.25) : null,
+                y = X(o.pumpkinPowder.gramsPerTsp),
+                b = w(o.pumpkinPowder),
+                $ = null != h && null != y ? h * y : null,
+                k =
+                  null != y
+                    ? `Refill estimate uses ${oe(y, 1)}g per tsp.`
+                    : "Add grams per tsp to estimate pack life.",
+                x = r && _(e) ? (e / 10) * 0.5 : null,
+                M = null != x ? te(x, 0.1) : null,
+                S = null != x ? te(x / 2, 0.25) : null,
+                B = w(o.greenLippedMussel),
+                P = r ? 0.5 : null,
+                E = r ? 0.5 : null,
+                I = X(o.plaquePowder.gramsPerTsp),
+                L = w(o.plaquePowder),
+                D = null != P && null != I ? P * I : null,
+                A =
+                  null != I
+                    ? `Refill estimate uses ${oe(I, 1)}g per tsp.`
+                    : "Add grams per tsp to estimate tub life.";
+              return {
+                salmonOil: T({
+                  def: l.salmonOil,
+                  value: c,
+                  exactValue: d,
+                  displayUnit: "pumps/day",
+                  secondaryText:
+                    null != d
+                      ? p
+                      : r
+                        ? "Enter a weight to show the daily dose."
+                        : "Choose a valid date to show the daily dose.",
+                  included: Boolean(o.salmonOil.include),
+                  missed: Boolean(s.salmonOil),
+                  refill: v({
+                    remaining: m,
+                    dailyUse: g,
+                    remainingUnit: "ml",
+                    missingUsageText:
+                      "Enter a weight to estimate days remaining.",
+                    missingRemainingText:
+                      "Set bottle size or remaining ml to start tracking.",
+                    missingAssumptionText:
+                      null != d
+                        ? "Add ml per pump to estimate bottle life."
+                        : "",
+                  }),
+                  settings: o.salmonOil,
+                  fields: [
+                    {
+                      key: "packSize",
+                      label: "Bottle size (ml)",
+                      placeholder: "2500",
+                    },
+                    {
+                      key: "remaining",
+                      label: "Amount remaining (ml)",
+                      placeholder: "2500",
+                    },
+                    {
+                      key: "mlPerPump",
+                      label: "Approx. ml per pump",
+                      placeholder: "5",
+                    },
+                  ],
+                  settingsHint:
+                    "Defaults shown: 2500ml bottle and 5 ml per pump. Edit anything at any time.",
+                  extraActions:
+                    '<button type="button" class="mini-btn" data-setting-action="preset-salmon-2500" data-supplement="salmonOil">Use 2500ml preset</button>',
+                  remainingLabel:
+                    "If remaining is blank, the bottle size is used as the current full amount.",
+                }),
+                pumpkinPowder: T({
+                  def: l.pumpkinPowder,
+                  value: f,
+                  exactValue: h,
+                  displayUnit: "tsp/day",
+                  secondaryText:
+                    null != h && null != $
+                      ? `Approx. ${se(te($, 0.1))}g/day using ${se(y)}g per tsp`
+                      : null != h
+                        ? k
+                        : r
+                          ? "Enter a weight to show the daily dose."
+                          : "Choose a valid date to show the daily dose.",
+                  included: Boolean(o.pumpkinPowder.include),
+                  missed: Boolean(s.pumpkinPowder),
+                  refill: v({
+                    remaining: b,
+                    dailyUse: $,
+                    remainingUnit: "g",
+                    missingUsageText:
+                      "Enter a weight to estimate days remaining.",
+                    missingRemainingText:
+                      "Set pack size or remaining grams to start tracking.",
+                    missingAssumptionText:
+                      null != h
+                        ? "Add grams per tsp to estimate pack life."
+                        : "",
+                  }),
+                  settings: o.pumpkinPowder,
+                  fields: [
+                    {
+                      key: "packSize",
+                      label: "Pack size (g)",
+                      placeholder: "200",
+                    },
+                    {
+                      key: "remaining",
+                      label: "Amount remaining (g)",
+                      placeholder: "200",
+                    },
+                    {
+                      key: "gramsPerTsp",
+                      label: "Grams per tsp",
+                      placeholder: "2.5",
+                    },
+                  ],
+                  settingsHint:
+                    "Defaults shown: 200g pack and 2.5g per tsp. Edit the assumption if your product differs.",
+                  extraActions: "",
+                  remainingLabel:
+                    "If remaining is blank, the pack size is treated as full.",
+                }),
+                greenLippedMussel: T({
+                  def: l.greenLippedMussel,
+                  value: M,
+                  exactValue: x,
+                  displayUnit: "g/day",
+                  secondaryText:
+                    null != S
+                      ? `Approx. ${oe(S, 2)} scoop/day using 1 scoop = 2g`
+                      : r
+                        ? "Enter a weight to show the daily dose."
+                        : "Choose a valid date to show the daily dose.",
+                  included: Boolean(o.greenLippedMussel.include),
+                  missed: Boolean(s.greenLippedMussel),
+                  refill: v({
+                    remaining: B,
+                    dailyUse: x,
+                    remainingUnit: "g",
+                    missingUsageText:
+                      "Enter a weight to estimate days remaining.",
+                    missingRemainingText:
+                      "Set tub size or remaining grams to start tracking.",
+                  }),
+                  settings: o.greenLippedMussel,
+                  fields: [
+                    {
+                      key: "packSize",
+                      label: "Tub size (g)",
+                      placeholder: "250",
+                    },
+                    {
+                      key: "remaining",
+                      label: "Amount remaining (g)",
+                      placeholder: "250",
+                    },
+                  ],
+                  settingsHint:
+                    "Defaults shown: 250g tub. The countdown uses the exact daily gram dose while the main display rounds to 0.1g.",
+                  extraActions: "",
+                  remainingLabel:
+                    "If remaining is blank, the tub size is treated as full.",
+                }),
+                plaquePowder: T({
+                  def: l.plaquePowder,
+                  value: E,
+                  exactValue: P,
+                  displayUnit: "tsp/day",
+                  secondaryText:
+                    null != D
+                      ? `Approx. ${se(te(D, 0.1))}g/day using ${se(I)}g per tsp`
+                      : r
+                        ? A
+                        : "Choose a valid date to show the daily dose.",
+                  included: Boolean(o.plaquePowder.include),
+                  missed: Boolean(s.plaquePowder),
+                  refill: v({
+                    remaining: L,
+                    dailyUse: D,
+                    remainingUnit: "g",
+                    missingUsageText: "",
+                    missingRemainingText:
+                      "Set tub size or remaining grams to start tracking.",
+                    missingAssumptionText: r
+                      ? "Add grams per tsp to estimate tub life."
+                      : "",
+                  }),
+                  settings: o.plaquePowder,
+                  fields: [
+                    {
+                      key: "packSize",
+                      label: "Tub size (g)",
+                      placeholder: "180",
+                    },
+                    {
+                      key: "remaining",
+                      label: "Amount remaining (g)",
+                      placeholder: "180",
+                    },
+                    {
+                      key: "gramsPerTsp",
+                      label: "Grams per tsp",
+                      placeholder: "2",
+                    },
+                  ],
+                  settingsHint:
+                    "Defaults shown: 180g tub and 2g per tsp. Plaque Powder stays fixed at 0.5 tsp per day.",
+                  extraActions: "",
+                  remainingLabel:
+                    "If remaining is blank, the tub size is treated as full.",
+                }),
+              };
+              function T(e) {
+                const t =
+                  null != e.refill.days
+                    ? `${e.refill.days} days left`
+                    : e.refill.title;
+                return {
+                  id: e.def.id,
+                  name: e.def.name,
+                  subtitle: e.def.subtitle,
+                  displayValue: null != e.value ? oe(e.value, 2) : "-",
+                  displayUnit: e.displayUnit,
+                  displayAmountText:
+                    null != e.value
+                      ? `${oe(e.value, 2)} ${e.displayUnit}`
+                      : "-",
+                  secondaryText: e.secondaryText,
+                  refillTitle: t,
+                  refillDetail: e.refill.detail,
+                  refillAlert: e.refill.alert,
+                  included: e.included,
+                  missed: e.missed,
+                  settings: e.settings,
+                  fields: e.fields,
+                  settingsHint: e.settingsHint,
+                  extraActions: e.extraActions,
+                  remainingLabel: e.remainingLabel,
+                };
+              }
+            })(o, e, c.supplementSettings, c.missedState, u),
+            F = c.history.find((t) => t.date === e),
+            V = u
+              ? (function (e, t, n) {
+                  if (!(Array.isArray(e) && e.length && _(n) && b(t)))
+                    return null;
+                  const i = ee(e, t);
+                  return i ? K(n, i.weightKg) : null;
+                })(A, e, o)
+              : null,
+            N = (function (e, t) {
+              if (!e)
+                return {
+                  type: "warning",
+                  message: "Choose a valid date to calculate Reggie's plan.",
+                };
+              if (e < r)
+                return {
+                  type: "warning",
+                  message:
+                    "Selected date cannot be earlier than Reggie's date of birth.",
+                };
+              if (!_(t))
+                return {
+                  type: "info",
+                  message:
+                    "Enter a valid weight to unlock daily food and weight-based supplements.",
+                };
+              return {
+                type: "success",
+                message: `Live plan ready for ${k(e)}.`,
+              };
+            })(t, o);
+          return {
+            selectedDateIso: e,
+            selectedDate: t,
+            todayIso: a,
+            weightKg: o,
+            isDateValid: u,
+            days: m,
+            weeks: g,
+            months: p,
+            monthsExact: h,
+            food: f,
+            stageLabel: I,
+            prediction: L,
+            growthPosition: D,
+            historyAsc: A,
+            historyDesc: T,
+            growthVelocity: W,
+            forecast: C,
+            supplements: R,
+            existingEntry: F,
+            changeSinceLast: V,
+            validation: N,
+          };
+        }
+        function y(e, t) {
+          if (!_(e) || null == t || !Number.isFinite(t))
+            return {
+              percent: null,
+              gramsPerDay: null,
+              meals: null,
+              gramsPerMeal: null,
+            };
+          const n = (function (e) {
+              return e < 2
+                ? 0.1
+                : e < 3
+                  ? 0.09
+                  : e < 4
+                    ? 0.08
+                    : e < 6
+                      ? 0.06
+                      : e < 9
+                        ? 0.04
+                        : e < 12
+                          ? 0.03
+                          : 0.02;
+            })(t),
+            i = Math.round(1e3 * e * n),
+            a = (function (e) {
+              return e < 5 ? 3 : 2;
+            })(t);
+          return {
+            percent: n,
+            gramsPerDay: i,
+            meals: a,
+            gramsPerMeal: a ? Math.round(i / a) : null,
+          };
+        }
+        function v({
+          remaining: e,
+          dailyUse: t,
+          remainingUnit: n,
+          missingUsageText: i,
+          missingRemainingText: a,
+          missingAssumptionText: s,
+        }) {
+          if (!_(e))
+            return {
+              days: null,
+              title: "Not tracking yet",
+              detail: a,
+              alert: !1,
+            };
+          if (s && null == t)
+            return {
+              days: null,
+              title: "Assumption needed",
+              detail: s,
+              alert: !1,
+            };
+          if (!_(t))
+            return {
+              days: null,
+              title: "Dose needed",
+              detail: i || "Daily dose needed to estimate days remaining.",
+              alert: !1,
+            };
+          const l = Math.max(0, Math.floor(e / t)),
+            o = l <= 10;
+          return {
+            days: l,
+            title: `${l} days left`,
+            detail: `${se(e)}${n} remaining at the current daily dose.`,
+            alert: o,
+          };
+        }
+        function w(e) {
+          const t = Q(e.remaining);
+          if (_(t)) return t;
+          const n = Q(e.packSize);
+          return _(n) ? n : null;
+        }
+        function b(e) {
+          if ("string" != typeof e || !/^\d{4}-\d{2}-\d{2}$/.test(e))
+            return null;
+          const [t, n, i] = e.split("-").map(Number),
+            a = new Date(t, n - 1, i, 12, 0, 0, 0);
+          return a.getFullYear() !== t ||
+            a.getMonth() !== n - 1 ||
+            a.getDate() !== i
+            ? null
+            : a;
+        }
+        function $(e) {
+          return `${e.getFullYear()}-${String(e.getMonth() + 1).padStart(2, "0")}-${String(e.getDate()).padStart(2, "0")}`;
+        }
+        function k(e) {
+          return e instanceof Date && !Number.isNaN(e.getTime())
+            ? new Intl.DateTimeFormat("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              }).format(e)
+            : "-";
+        }
+        function x(e, t) {
+          return Math.max(0, Math.floor((Z(t) - Z(e)) / o));
+        }
+        function M(e, t) {
+          return x(e, t) / 7;
+        }
+        function S(e, t) {
+          let n =
+            12 * (t.getFullYear() - e.getFullYear()) +
+            (t.getMonth() - e.getMonth());
+          return (t.getDate() < e.getDate() && (n -= 1), Math.max(0, n));
+        }
+        function B(e, t) {
+          return x(e, t) / 30.4375;
+        }
+        function P(e) {
+          if (!Number.isFinite(e))
+            return { min: n.min, max: n.max, adultPct: 1 };
+          if (e <= a[0].month)
+            return { ...a[0], midpoint: ce(a[0].min, a[0].max) };
+          if (e >= a[a.length - 1].month) {
+            const e = a[a.length - 1];
+            return { ...e, midpoint: ce(e.min, e.max) };
+          }
+          for (let t = 0; t < a.length - 1; t += 1) {
+            const n = a[t],
+              i = a[t + 1];
+            if (e >= n.month && e <= i.month) {
+              const t = (e - n.month) / (i.month - n.month || 1),
+                a = de(n.min, i.min, t),
+                s = de(n.max, i.max, t);
+              return {
+                month: e,
+                min: a,
+                max: s,
+                adultPct: de(n.adultPct, i.adultPct, t),
+                midpoint: ce(a, s),
+              };
+            }
+          }
+          const t = a[a.length - 1];
+          return { ...t, midpoint: ce(t.min, t.max) };
+        }
+        function E(e) {
+          if (!Array.isArray(e) || e.length < 2)
+            return { intervals: [], latest: null, avgLast3: null, trend: null };
+          const t = [];
+          for (let n = 1; n < e.length; n += 1) {
+            const i = e[n - 1],
+              a = e[n],
+              s = b(i.date),
+              l = b(a.date);
+            if (!s || !l) continue;
+            const o = x(s, l);
+            if (o <= 0) continue;
+            const r = a.weightKg - i.weightKg;
+            t.push({
+              from: i.date,
+              to: a.date,
+              days: o,
+              deltaKg: r,
+              kgPerWeek: (r / o) * 7,
+            });
+          }
+          if (!t.length)
+            return { intervals: [], latest: null, avgLast3: null, trend: null };
+          const n = t[t.length - 1],
+            i = t.slice(-3);
+          return {
+            intervals: t,
+            latest: n,
+            avgLast3:
+              i.length >= 3
+                ? i.reduce((e, t) => e + t.kgPerWeek, 0) / i.length
+                : null,
+            trend:
+              n.deltaKg > 0.05
+                ? "rising"
+                : n.deltaKg < -0.05
+                  ? "falling"
+                  : "unchanged",
+          };
+        }
+        function I(e) {
+          J(t.history, e);
+        }
+        function L(e) {
+          J(t.supplementSettings, e);
+        }
+        function D(e, n) {
+          ((c.sections[e] = n), J(t.sections, c.sections));
+        }
+        function A(e) {
+          const t = window.matchMedia("(prefers-color-scheme: dark)").matches,
+            n = "system" === e ? (t ? "dark" : "light") : e;
+          ((document.documentElement.dataset.theme = n),
+            d.themeButtons.forEach((t) => {
+              t.setAttribute(
+                "aria-pressed",
+                String(t.dataset.themeChoice === e),
+              );
+            }),
+            d.themeColorMeta.setAttribute(
+              "content",
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--theme-color")
+                .trim() || ("dark" === n ? "#151917" : "#ece4d8"),
+            ));
+        }
+        function T() {
+          const e = Boolean(c.deferredPrompt) || (he() && !fe());
+          (d.installBtn.classList.toggle("hidden", !e),
+            (d.installBtn.textContent = c.deferredPrompt
+              ? "Install App"
+              : "Add to Home Screen"));
+        }
+        function W() {
+          V(d.installModal);
+        }
+        function C(e, t) {
+          return (
+            (d.confirmModalTitle.textContent = e),
+            (d.confirmModalBody.textContent = t),
+            F(d.confirmModal, d.confirmCancelBtn),
+            new Promise((e) => {
+              c.confirmResolve = e;
+            })
+          );
+        }
+        function R(e) {
+          (V(d.confirmModal),
+            "function" == typeof c.confirmResolve &&
+              (c.confirmResolve(e), (c.confirmResolve = null)));
+        }
+        function F(e, t) {
+          ((c.modalPreviousFocus =
+            document.activeElement instanceof HTMLElement
+              ? document.activeElement
+              : null),
+            (c.currentModal = e),
+            document.body.classList.add("modal-open"),
+            e.classList.add("is-open"),
+            e.setAttribute("aria-hidden", "false"),
+            window.setTimeout(() => {
+              t && "function" == typeof t.focus && t.focus();
+            }, 0));
+        }
+        function V(e) {
+          e &&
+            (e.classList.remove("is-open"),
+            e.setAttribute("aria-hidden", "true"),
+            c.currentModal === e &&
+              ((c.currentModal = null),
+              document.body.classList.remove("modal-open")),
+            c.modalPreviousFocus &&
+              "function" == typeof c.modalPreviousFocus.focus &&
+              c.modalPreviousFocus.focus(),
+            (c.modalPreviousFocus = null));
+        }
+        function N(e) {
+          for (; d.toastStack.children.length >= 3; )
+            d.toastStack.firstElementChild.remove();
+          const t = document.createElement("div");
+          ((t.className = "toast"),
+            (t.textContent = e),
+            d.toastStack.appendChild(t),
+            window.setTimeout(() => {
+              t.remove();
+            }, 3400));
+        }
+        function H(e, t) {
+          ((d.validationMessage.className = `message ${e} is-visible`),
+            (d.validationMessage.textContent = t));
+        }
+        function O(e) {
+          ((c.lastSaveMessage = e),
+            (d.saveMessage.className = "message success is-visible"),
+            (d.saveMessage.textContent = e));
+        }
+        function j() {
+          ((c.lastSaveMessage = ""),
+            (d.saveMessage.className = "message success"),
+            (d.saveMessage.textContent = ""));
+        }
+        function K(e, t) {
+          if (!_(e) || !_(t)) return null;
+          const n = te(e - t, 0.1);
+          return { diffKg: n, diffPct: t ? (n / t) * 100 : 0 };
+        }
+        function z(e, t) {
+          return e.date.localeCompare(t.date);
+        }
+        function U(e, t) {
+          return t.date.localeCompare(e.date);
+        }
+        function G(e) {
+          const t = {};
+          return (
+            Object.keys(l).forEach((n) => {
+              const i =
+                e && e[n] && "object" == typeof e[n] && !Array.isArray(e[n])
+                  ? e[n]
+                  : {};
+              ((t[n] = { ...l[n].defaultSettings }),
+                Object.keys(t[n]).forEach((e) => {
+                  "include" !== e
+                    ? ("string" == typeof i[e] && (t[n][e] = i[e]),
+                      "number" == typeof i[e] &&
+                        Number.isFinite(i[e]) &&
+                        (t[n][e] = String(i[e])))
+                    : "boolean" == typeof i[e] && (t[n][e] = i[e]);
+                }));
+            }),
+            t
+          );
+        }
+        function q(e) {
+          ((c.supplementSettings = G(c.supplementSettings)),
+            c.supplementSettings[e] ||
+              (c.supplementSettings[e] = { ...l[e].defaultSettings }));
+        }
+        function Y(e, t) {
+          try {
+            const n = localStorage.getItem(e);
+            return null == n ? t : JSON.parse(n);
+          } catch (e) {
+            return t;
+          }
+        }
+        function J(e, t) {
+          try {
+            localStorage.setItem(e, JSON.stringify(t));
+          } catch (e) {}
+        }
+        function Z(e) {
+          return new Date(e.getFullYear(), e.getMonth(), e.getDate()).getTime();
+        }
+        function Q(e) {
+          const t = Number.parseFloat(e);
+          return Number.isFinite(t) ? t : null;
+        }
+        function X(e) {
+          const t = Q(e);
+          return _(t) ? t : null;
+        }
+        function _(e) {
+          return Number.isFinite(e) && e > 0;
+        }
+        function ee(e, t) {
+          if (!Array.isArray(e) || !b(t)) return null;
+          for (let n = e.length - 1; n >= 0; n -= 1)
+            if (e[n].date < t) return e[n];
+          return null;
+        }
+        function te(e, t) {
+          return !Number.isFinite(e) || !Number.isFinite(t) || t <= 0
+            ? null
+            : Math.round(e / t) * t;
+        }
+        function ne(e) {
+          return `${oe(e, 1)} weeks`;
+        }
+        function ie(e) {
+          return `${oe(e, 1)} kg`;
+        }
+        function ae(e) {
+          return oe(e, 1);
+        }
+        function se(e) {
+          return oe(e, 1);
+        }
+        function le(e, t) {
+          if (!Number.isFinite(e)) return "-";
+          return `${e > 0 ? "+" : e < 0 ? "-" : ""}${oe(Math.abs(e), t)}`;
+        }
+        function oe(e, t) {
+          if (!Number.isFinite(e)) return "-";
+          return e
+            .toFixed(t)
+            .replace(/\.0+$/, "")
+            .replace(/(\.\d*[1-9])0+$/, "$1");
+        }
+        function re(e, t, n) {
+          return Math.min(n, Math.max(t, e));
+        }
+        function de(e, t, n) {
+          return e + (t - e) * n;
+        }
+        function ce(e, t) {
+          return (e + t) / 2;
+        }
+        function ue(e) {
+          return e ? e.charAt(0).toUpperCase() + e.slice(1) : "";
+        }
+        function me(e, t = !1) {
+          if (!e.length) return "";
+          return `${`M ${e[0][0]} ${e[0][1]}`} ${e
+            .slice(1)
+            .map((e) => `L ${e[0]} ${e[1]}`)
+            .join(" ")}${t ? " Z" : ""}`;
+        }
+        function ge(e, t = "") {
+          return `<div class="subtle-chip ${t}">${pe(e)}</div>`;
+        }
+        function pe(e) {
+          return String(e)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+        function he() {
+          return (
+            /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+            ("MacIntel" === navigator.platform && navigator.maxTouchPoints > 1)
+          );
+        }
+        function fe() {
+          return (
+            window.matchMedia("(display-mode: standalone)").matches ||
+            !0 === window.navigator.standalone
+          );
+        }
+        !(function () {
+          const n = $(new Date());
+          ((d.selectedDate.min = e),
+            (d.selectedDate.value = n),
+            d.collapsibles.forEach((e) => {
+              const t = e.dataset.section;
+              Object.prototype.hasOwnProperty.call(c.sections, t) &&
+                (e.open = Boolean(c.sections[t]));
+            }),
+            A(c.themePreference),
+            (function () {
+              const e =
+                  '\n <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">\n <defs>\n <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">\n <stop offset="0%" stop-color="#ddb07a"/>\n <stop offset="100%" stop-color="#1d6b5d"/>\n </linearGradient>\n </defs>\n <rect width="256" height="256" rx="64" fill="#f5efe5"/>\n <rect x="18" y="18" width="220" height="220" rx="56" fill="url(#g)" opacity="0.12"/>\n <circle cx="128" cy="112" r="56" fill="none" stroke="#1d6b5d" stroke-width="16"/>\n <path d="M128 56 A56 56 0 0 1 183 111" fill="none" stroke="#d59d67" stroke-width="16" stroke-linecap="round"/>\n <text x="128" y="168" text-anchor="middle" font-size="64" font-family="Avenir Next, Segoe UI, sans-serif" font-weight="700" fill="#1f1a16">RR</text>\n </svg>\n '.trim(),
+                t = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(e)}`,
+                n = document.createElement("link");
+              ((n.rel = "apple-touch-icon"),
+                (n.href = t),
+                document.head.appendChild(n));
+              const i = document.createElement("link");
+              ((i.rel = "icon"), (i.href = t), document.head.appendChild(i));
+            })(),
+            window.addEventListener("beforeinstallprompt", (e) => {
+              (e.preventDefault(), (c.deferredPrompt = e), T());
+            }),
+            window.addEventListener("appinstalled", () => {
+              ((c.deferredPrompt = null), T(), N("Reggie Raw Feed installed."));
+            }),
+            (function () {
+              (d.selectedDate.addEventListener("input", () => {
+                (j(), h());
+              }),
+                d.weightInput.addEventListener("input", () => {
+                  (j(), h());
+                }),
+                d.saveEntryBtn.addEventListener("click", u),
+                d.quickSaveBtn.addEventListener("click", u),
+                d.todayBtn.addEventListener("click", () => {
+                  ((d.selectedDate.value = $(new Date())),
+                    j(),
+                    h(),
+                    document
+                      .getElementById("calculatorCard")
+                      .scrollIntoView({ behavior: "smooth", block: "start" }));
+                }),
+                d.lastWeightBtn.addEventListener("click", () => {
+                  if (!c.history.length)
+                    return void N("No saved weigh-ins yet.");
+                  const e = [...c.history].sort(U)[0];
+                  ((d.selectedDate.value = e.date),
+                    (d.weightInput.value = ae(e.weightKg)),
+                    j(),
+                    h(),
+                    document
+                      .getElementById("calculatorCard")
+                      .scrollIntoView({ behavior: "smooth", block: "start" }));
+                }),
+                d.supplementsBtn.addEventListener("click", () => {
+                  const e = document.getElementById("supplementsSection");
+                  ((e.open = !0),
+                    D(e.dataset.section, !0),
+                    e.scrollIntoView({ behavior: "smooth", block: "start" }));
+                }),
+                d.themeButtons.forEach((e) => {
+                  e.addEventListener("click", () => {
+                    const n = e.dataset.themeChoice;
+                    ((c.themePreference = n), J(t.theme, n), A(n));
+                  });
+                }),
+                d.supplementsGrid.addEventListener("change", m),
+                d.supplementsGrid.addEventListener("click", g),
+                d.historyList.addEventListener("click", p),
+                d.clearHistoryBtn.addEventListener("click", async () => {
+                  if (!c.history.length)
+                    return void N("History is already empty.");
+                  (await C(
+                    "Clear all history?",
+                    "This will remove every saved weigh-in from this device.",
+                  )) &&
+                    ((c.history = []),
+                    I(c.history),
+                    N("History cleared."),
+                    h());
+                }),
+                d.confirmCancelBtn.addEventListener("click", () => R(!1)),
+                d.confirmOkBtn.addEventListener("click", () => R(!0)),
+                d.confirmModal.addEventListener("click", (e) => {
+                  e.target === d.confirmModal && R(!1);
+                }),
+                d.installBtn.addEventListener("click", async () => {
+                  if (c.deferredPrompt) {
+                    c.deferredPrompt.prompt();
+                    try {
+                      await c.deferredPrompt.userChoice;
+                    } catch (e) {}
+                    return ((c.deferredPrompt = null), void T());
+                  }
+                  !he() || fe()
+                    ? N("Installation depends on browser support here.")
+                    : F(d.installModal, d.installDismissBtn);
+                }),
+                d.installDismissBtn.addEventListener("click", W),
+                d.installModal.addEventListener("click", (e) => {
+                  e.target === d.installModal && W();
+                }),
+                document.addEventListener("keydown", (e) => {
+                  "Escape" === e.key &&
+                    c.currentModal &&
+                    (c.currentModal === d.confirmModal && R(!1),
+                    c.currentModal === d.installModal && W());
+                }),
+                d.collapsibles.forEach((e) => {
+                  e.addEventListener("toggle", () => {
+                    D(e.dataset.section, e.open);
+                  });
+                }));
+              const e = window.matchMedia("(prefers-color-scheme: dark)");
+              "function" == typeof e.addEventListener
+                ? e.addEventListener("change", () => {
+                    "system" === c.themePreference && A("system");
+                  })
+                : "function" == typeof e.addListener &&
+                  e.addListener(() => {
+                    "system" === c.themePreference && A("system");
+                  });
+            })(),
+            h());
+        })();
+      })();
+    </script>
+  </body>
+</html>
